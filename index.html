@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>赣榆情感忠诚度检测器</title>
+    <title>点进来就对了嘛</title>
     <style>
         /* 保持原有所有样式不变 */
         /* 新增背景容器样式 */
@@ -251,15 +251,15 @@
     <!-- 新增背景容器 -->
     <div class="bg-container">
         <div class="loading"></div>
-        <img class="bg-image" id="bgImage" alt="随机背景">
+        <img class="bg-image" id="bgImage" alt="政爱你">
     </div>
 
     <!-- 主界面 -->
     <div class="container">
-        <h1 class="title">❤️ 终极情感安全检测 ❤️</h1>
+        <h1 class="title">❤️ 赣榆😁有情人必测❤️</h1>
         <input type="text" class="love-input" placeholder="你的姓名" id="yourName">
         <input type="text" class="love-input" placeholder="伴侣姓名" id="partnerName">
-        <button id="submitBtn">开始深度检测</button>
+        <button id="submitBtn">俺不是孬种🙌</button>
         <audio id="bgMusic" loop>
             <source src="https://assets.mixkit.co/music/preview/mixkit-candy-325.mp3" type="audio/mpeg">
         </audio>
@@ -272,13 +272,13 @@
     <!-- 进度条界面 -->
     <div class="progress-layer">
         <div class="progress-box">
-            <h2 style="color:#2e7d32; text-align:center; margin-bottom:20px;">🔍 情感AI深度扫描中...</h2>
+            <h2 style="color:#2e7d32; text-align:center; margin-bottom:20px;">🔍请耐心等待情感AI😘深度扫描中...</h2>
             <div class="progress-bar">
                 <div class="progress-fill"></div>
                 <div class="progress-text">0%</div>
             </div>
             <p style="text-align:center; margin-top:15px; color:#666; font-size:14px;">
-                民政部认证系统 | 数据同步至云端监控
+                民政局认证系统❤️💕 | 数据同步至云端监控👌
             </p>
             <div style="text-align: center;">
                 <img src="https://via.placeholder.com/60x60?text=Government+Certified" 
@@ -443,7 +443,7 @@
                     animation-delay: ${Math.random() * 5}s;
                     transform: rotate(${15 + Math.random() * 30}deg);
                 `;
-                text.textContent = '你被绿了';
+                text.textContent = '哈哈哈，你被绿了，就是你';
                 progressLayer.appendChild(text);
             }
 
@@ -455,15 +455,15 @@
                 progressText.textContent = `${progress}%`;
 
                 // 更真实的伪造分析提示
-                if (progress > 0 && progress <= 20) progressText.innerHTML = "通信模式核查...";
-                else if (progress > 20 && progress <= 40) progressText.innerHTML = "社交账号交叉验证...";
-                else if (progress > 40 && progress <= 60) progressText.innerHTML = "酒店预订数据比对...";
-                else if (progress > 60 && progress <= 80) progressText.innerHTML = "银行消费记录核查...";
-                else progressText.innerHTML = "生物特征比对完成，系统运算中...";
+                if (progress > 0 && progress <= 20) progressText.innerHTML = "🤣境外通信模式核查...";
+                else if (progress > 20 && progress <= 40) progressText.innerHTML = "😂社交账号验证...";
+                else if (progress > 40 && progress <= 60) progressText.innerHTML = "😒酒店预订数据比对...";
+                else if (progress > 60 && progress <= 80) progressText.innerHTML = "💕消费记录核查...";
+                else progressText.innerHTML = "💖我已经比对完成，系统运算中...";
 
                 if (progress >= 100) {
                     clearInterval(timer);
-                    progressText.innerHTML = "检测完毕，查看结果!";
+                    progressText.innerHTML = "检测完毕，真的不孬";
                     redeemBtn.style.display = 'block';
                 }
             }, 50);
@@ -482,7 +482,7 @@
 
         // 跳转恐怖界面
         function enterTerrorMode() {
-            if (confirm('检测发现你可能已出轨\n你将被记录进全球失信名单\n确定要查看后果吗？')) {
+            if (confirm('检测发现你可能已出轨\n你将被记录进失信名单\n确定要查看后果吗？')) {
                 progressLayer.style.display = 'none';
                 redeemBtn.style.display = 'none';
                 terrorPage.style.display = 'block';
