@@ -22,7 +22,7 @@
         }
 
         /* 甜蜜页面 */
-        .container {
+       .container {
             width: 95%;
             max-width: 800px;
             margin: 20px auto;
@@ -33,7 +33,7 @@
             transition: all 0.5s ease;
         }
 
-        .title {
+       .title {
             text-align: center;
             color: #ff1493;
             margin: 10px 0;
@@ -51,7 +51,7 @@
             }
         }
 
-        .love-input {
+       .love-input {
             display: block;
             width: 90%;
             margin: 15px auto;
@@ -62,7 +62,7 @@
             transition: border-color 0.3s ease;
         }
 
-        .love-input:focus {
+       .love-input:focus {
             border-color: #ff1493;
             outline: none;
         }
@@ -103,12 +103,12 @@
 
         /* 移动端适配 */
         @media (max-width: 768px) {
-            .container {
+           .container {
                 margin: 10px auto;
                 padding: 10px;
             }
 
-            .love-input {
+           .love-input {
                 width: 100%;
                 font-size: 14px;
                 padding: 10px;
@@ -118,10 +118,15 @@
                 padding: 12px 30px;
                 font-size: 18px;
             }
+
+            /* 调整恐怖页面文字大小 */
+           .curse-text {
+                font-size: 1.5em;
+            }
         }
 
         /* 恐怖页面样式 */
-        .terror-bg {
+       .terror-bg {
             position: fixed;
             top: 0;
             left: 0;
@@ -134,7 +139,7 @@
             transition: opacity 0.5s ease;
         }
 
-        .blood-filter {
+       .blood-filter {
             position: fixed;
             top: 0;
             left: 0;
@@ -147,10 +152,8 @@
         }
 
         /* 诅咒文字 */
-        .curse-text {
+       .curse-text {
             position: absolute;
-            font-size: 2.5em;
-            color: #ff0000;
             text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
             animation: curseFloat 3s infinite;
             opacity: 0;
@@ -167,7 +170,7 @@
             }
         }
 
-        .button-container {
+       .button-container {
             text-align: center;
             margin: 20px 0;
         }
@@ -217,16 +220,24 @@
     <audio id="ambientAudio" src="https://assets.mixkit.co/active_storage/sfx/281/281-preview.mp3" loop></audio>
 
     <script>
-        // 随机诅咒文字
+        // 新的诅咒文字
         const curseTexts = [
-            "检测到不忠行为...",
-            "契约已生效...",
-            "为什么背叛？",
-            "黑暗已降临...",
-            "无处可逃...",
-            "诅咒如影随形...",
-            "灵魂将被吞噬...",
-            "恐惧永不消散..."
+            '在这情人节，你的爱将如泡沫般破碎，化为乌有！',
+            '背叛的种子已种下，痛苦的藤蔓将缠绕你整个爱情旅程！',
+            '情人节的甜蜜与你绝缘，孤独和悔恨将伴你左右！',
+            '你对爱情的不忠，会让幸福之门永远对你关闭！',
+            '谎言编织的爱情美梦，将在这一夜被恐怖的现实击碎！',
+            '情人节的玫瑰会枯萎，而你的爱情将永远失去生机！',
+            '虚伪的爱意被揭穿，你将在无尽的愧疚中度过余生！',
+            '爱情的诅咒降临，你将不断失去，直到一无所有！',
+            '情人节的浪漫将变成噩梦，恐惧会时刻笼罩着你！',
+            '你对感情的亵渎，会让你陷入爱的深渊无法自拔！'
+        ];
+
+        // 颜色数组
+        const colors = [
+            '#FF0000', '#FF4500', '#FF8C00', '#FFA500', '#FFFF00',
+            '#ADFF2F', '#00FF00', '#00FFFF', '#00BFFF', '#1E90FF'
         ];
 
         // 获取元素
@@ -343,13 +354,45 @@
         }
 
         function generateCursedText() {
-            const numTexts = 8; // 生成的诅咒文字数量
+            const numTexts = curseTexts.length;
+            const usedPositions = [];
+            // 根据屏幕大小动态调整间距
+            const padding = Math.min(window.innerWidth, window.innerHeight) * 0.2;
+
             for (let i = 0; i < numTexts; i++) {
-                const randomText = curseTexts[Math.floor(Math.random() * curseTexts.length)];
+                let newLeft, newTop;
+                let isOverlapping;
+
+                do {
+                    isOverlapping = false;
+                    newLeft = Math.random() * (window.innerWidth - padding);
+                    newTop = Math.random() * (window.innerHeight - padding);
+
+                    for (let j = 0; j < usedPositions.length; j++) {
+                        const pos = usedPositions[j];
+                        if (
+                            newLeft > pos.left - padding &&
+                            newLeft < pos.left + padding &&
+                            newTop > pos.top - padding &&
+                            newTop < pos.top + padding
+                        ) {
+                            isOverlapping = true;
+                            break;
+                        }
+                    }
+                } while (isOverlapping);
+
+                usedPositions.push({ left: newLeft, top: newTop });
+
+                const randomText = curseTexts[i];
                 const div = document.createElement('div');
                 div.className = 'curse-text';
-                div.style.left = `${Math.random() * 80}%`;
-                div.style.top = `${Math.random() * 80}%`;
+                div.style.left = `${newLeft}px`;
+                div.style.top = `${newTop}px`;
+                div.style.color = colors[i % colors.length];
+                // 添加随机旋转角度
+                const randomRotation = Math.random() * 360;
+                div.style.transform = `rotate(${randomRotation}deg)`;
                 div.textContent = randomText;
                 curseContainer.appendChild(div);
                 setTimeout(() => {
