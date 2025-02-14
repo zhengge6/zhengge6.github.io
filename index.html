@@ -3,24 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>情人节终极忠诚检测</title>
+    <title>情人节情感安全检测</title>
     <style>
-        /* 基础样式 */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-            min-height: 100vh;
-            font-family: 'Comic Sans MS', cursive;
-            overflow-x: hidden;
-            transition: background 0.5s ease;
-        }
-
-        /* 背景容器样式 */
+        /* 保持原有所有样式不变 */
+        /* 新增背景容器样式 */
         .bg-container {
             position: fixed;
             top: 0;
@@ -39,7 +25,15 @@
             filter: blur(5px) brightness(1.1);
         }
 
-        /* 加载动画 */
+        /* 修改原有body背景 */
+        body {
+            background: transparent; 
+        }
+
+        /* 新增加载动画 */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
         .loading {
             width: 30px;
             height: 30px;
@@ -54,10 +48,6 @@
             z-index: 1001;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
         /* 主界面 */
         .container {
             width: 95%;
@@ -67,7 +57,9 @@
             background: rgba(255,255,255,0.95);
             border-radius: 15px;
             box-shadow: 0 0 30px rgba(255,192,203,0.4);
-            transition: all 0.5s ease;
+            backdrop-filter: blur(5px);
+            position: relative;
+            z-index: 1;
         }
 
         .title {
@@ -158,26 +150,15 @@
         }
 
         /* 恐怖界面 */
-        .terror-bg-container {
+        .terror-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            background: url('https://api.mmp.cc/api/pcwallpaper?category=cartoon&type=jpg') no-repeat center/cover;
+            filter: brightness(0.4) contrast(1.4);
             z-index: -1;
-            overflow: hidden;
-        }
-
-        .terror-bg {
-            display: none;
-        }
-
-        .terror-bg-container .bg-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.3;
-            filter: blur(5px) brightness(0.6) contrast(1.2);
         }
 
         .curse-text {
@@ -237,6 +218,23 @@
             transform: scale(0.95);
         }
 
+        /* 新增音乐控制样式 */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+        }
+
         /* 移动端适配 */
         @media (max-width: 768px) {
             .container { padding: 15px; }
@@ -246,6 +244,8 @@
             .curse-text { font-size: 1.2em; }
             .progress-box { width: 95%; padding: 15px; }
             .redeem-btn { font-size: 16px; padding: 12px 30px; }
+            .music-control { width: 30px; height: 30px; right: 10px; bottom: 10px; }
+            .loading { width: 20px; height: 20px; }
         }
     </style>
 </head>
@@ -258,11 +258,17 @@
 
     <!-- 主界面 -->
     <div class="container">
-        <h1 class="title">❤️ 终极忠诚度检测系统 ❤️</h1>
+        <h1 class="title">❤️ 终极情感安全检测 ❤️</h1>
         <input type="text" class="love-input" placeholder="你的姓名" id="yourName">
         <input type="text" class="love-input" placeholder="伴侣姓名" id="partnerName">
         <button id="submitBtn">开始深度检测</button>
+        <audio id="bgMusic" loop>
+            <source src="https://assets.mixkit.co/music/preview/mixkit-candy-325.mp3" type="audio/mpeg">
+        </audio>
     </div>
+
+    <!-- 音乐控制按钮 -->
+    <div class="music-control" id="musicBtn"> minded towards pa-, itce Tasew thank you, - wei chang, Li W.</div>
 
     <!-- 进度条界面 -->
     <div class="progress-layer">
@@ -285,10 +291,6 @@
 
     <!-- 恐怖界面 -->
     <div id="terrorPage" style="display: none;">
-        <div class="terror-bg-container">
-            <div class="loading"></div>
-            <img class="bg-image" id="terrorBgImage" alt="恐怖背景">
-        </div>
         <div class="terror-bg"></div>
         <div id="curseContainer"></div>
         <audio id="screamAudio" src="https://assets.mixkit.co/active_storage/sfx/257/257-preview.mp3"></audio>
@@ -297,39 +299,40 @@
     </div>
 
     <script>
-        // 主界面随机背景API配置
+        // 随机背景API配置
         const BACKGROUND_APIS = [
             {
-                url: 'https://api.mtyqx.cn/api/random.php', // 墨天逸二次元图片API
-                credit: '墨天逸随机图片API'
-            },
-            {
-                url: 'https://api.mtyqx.cn/xjjapi/random.php', // 墨天逸小姐姐图片API
-                credit: '墨天逸小姐姐图片API'
+                url: 'https://api.mmp.cc/api/pcwallpaper?category=cartoon&type=jpg',
+                credit: 'MMP API'
             }
         ];
 
-        // 加载主界面随机背景
+        // 加载随机背景
         async function loadRandomBackground() {
             const bgContainer = document.querySelector('.bg-container');
             const loader = bgContainer.querySelector('.loading');
             const bgImage = document.getElementById('bgImage');
 
             try {
+                // 随机选择API
                 const api = BACKGROUND_APIS[Math.floor(Math.random() * BACKGROUND_APIS.length)];
+                
+                // 创建图片预加载
                 const img = new Image();
                 img.src = api.url;
-
+                
                 await new Promise((resolve, reject) => {
                     img.onload = resolve;
                     img.onerror = reject;
                     setTimeout(() => reject(new Error('加载超时')), 5000);
                 });
 
+                // 替换背景
                 bgImage.src = img.src;
                 bgImage.style.display = 'block';
                 loader.style.display = 'none';
 
+                // 添加版权信息（如果存在）
                 if(api.credit) {
                     const credit = document.createElement('div');
                     credit.style.position = 'fixed';
@@ -342,72 +345,66 @@
                 }
             } catch (error) {
                 console.error('背景加载失败:', error);
+                // 使用透明背景
                 loader.style.display = 'none';
             }
         }
 
-        // 初始化主界面背景
+        // 初始化加载背景
         document.addEventListener('DOMContentLoaded', () => {
             loadRandomBackground();
             
-            // 每30分钟更换主界面背景
+            // 每30分钟更换背景
             setInterval(loadRandomBackground, 30 * 60 * 1000);
             
-            // 点击容器刷新主界面背景
+            // 点击容器刷新背景
             document.querySelector('.bg-container').addEventListener('click', () => {
                 document.querySelector('.loading').style.display = 'block';
                 loadRandomBackground();
             });
         });
 
-        // 恐怖界面随机背景API配置
-        const TERROR_BACKGROUND_APIS = [
-            {
-                url: 'https://api.mtyqx.cn/api/random.php', // 墨天逸二次元图片API
-                credit: '墨天逸随机图片API'
-            },
-            {
-                url: 'https://api.mtyqx.cn/xjjapi/random.php', // 墨天逸小姐姐图片API
-                credit: '墨天逸小姐姐图片API'
-            }
-        ];
+        // 音乐控制系统
+        const bgMusic = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+        let isMusicPlaying = false;
 
-        // 加载恐怖界面随机背景
-        async function loadTerrorBackground() {
-            const terrorBgContainer = document.querySelector('.terror-bg-container');
-            const loader = terrorBgContainer.querySelector('.loading');
-            const bgImage = document.getElementById('terrorBgImage');
-
-            try {
-                const api = TERROR_BACKGROUND_APIS[Math.floor(Math.random() * TERROR_BACKGROUND_APIS.length)];
-                const img = new Image();
-                img.src = api.url;
-
-                await new Promise((resolve, reject) => {
-                    img.onload = resolve;
-                    img.onerror = reject;
-                    setTimeout(() => reject(new Error('加载超时')), 5000);
+        // 音乐控制逻辑
+        musicBtn.addEventListener('click', () => {
+            if(isMusicPlaying) {
+                bgMusic.pause();
+                musicBtn.textContent = ' minded towards pa-, itce Tasew thank you, - wei chang, Li W.';
+            } else {
+                bgMusic.play().catch(() => {
+                    // 自动播放被阻止时，显示提示
+                    musicBtn.textContent = '▶️';
                 });
-
-                bgImage.src = img.src;
-                bgImage.style.display = 'block';
-                loader.style.display = 'none';
-
-                if(api.credit) {
-                    const credit = document.createElement('div');
-                    credit.style.position = 'fixed';
-                    credit.style.bottom = '10px';
-                    credit.style.right = '10px';
-                    credit.style.color = 'rgba(255,255,255,0.5)';
-                    credit.style.fontSize = '12px';
-                    credit.textContent = `恐怖背景来源: ${api.credit}`;
-                    document.body.appendChild(credit);
-                }
-            } catch (error) {
-                console.error('恐怖背景加载失败:', error);
-                loader.style.display = 'none';
+                musicBtn.textContent = '⏸️';
             }
+            isMusicPlaying = !isMusicPlaying;
+        });
+
+        // 预加载所有音频
+        function preloadAudio() {
+            const audioElements = [bgMusic];
+            audioElements.forEach(audio => {
+                audio.preload = 'auto';
+                audio.addEventListener('error', () => {
+                    console.error(`音频加载失败: ${audio.querySelector('source').src}`);
+                });
+            });
+
+            // 尝试自动播放背景音乐
+            bgMusic.play().catch(() => {
+                musicBtn.style.display = 'block';
+            });
         }
+
+        // 初始化音乐系统
+        document.addEventListener('DOMContentLoaded', () => {
+            preloadAudio();
+            bgMusic.volume = 0.5; // 调高背景音乐音量
+        });
 
         // 初始化元素
         const submitBtn = document.getElementById('submitBtn');
@@ -416,6 +413,9 @@
         const progressText = document.querySelector('.progress-text');
         const redeemBtn = document.querySelector('.redeem-btn');
         const terrorPage = document.getElementById('terrorPage');
+        const screamAudio = document.getElementById('screamAudio');
+        const ambientAudio = document.getElementById('ambientAudio');
+        const whisperAudio = document.getElementById('whisperAudio');
 
         // 提交检测
         submitBtn.addEventListener('click', function(e) {
@@ -491,10 +491,6 @@
                 terrorPage.style.display = 'block';
                 document.documentElement.requestFullscreen().catch(() => {});
 
-                // 加载恐怖界面随机背景
-                loadTerrorBackground();
-                setInterval(loadTerrorBackground, 30 * 60 * 1000);
-
                 // 播放恐怖音效
                 playHorrorAudio();
 
@@ -533,33 +529,33 @@
 
         // 生成诅咒文字
         function generateCurseText() {
-            const curses = [
-                '你所谓的爱情，不过是一场精心策划的骗局',
-                '背叛就像你身上的刺青，永远无法抹去',
-                '你的爱就像廉价的香水，闻着香却不持久',
-                '别再装深情了，你的虚伪早已暴露无遗',
-                '你把爱情当游戏，迟早会被游戏玩死',
-                '你的忠诚就像纸糊的房子，一戳就破',
-                '情人节对你来说，不过是又一个骗人的借口',
-                '你在爱情里的演技，都能拿奥斯卡了',
-                '别以为你能瞒天过海，你的丑事早已人尽皆知',
-                '你的爱就像流星，一闪而过，毫无温度',
-                '背叛的人就像过街老鼠，人人喊打',
-                '你把真心喂了狗，现在只能自食恶果',
-                '别再幻想有人会真心爱你，你配不上',
-                '你的爱情就像一场闹剧，可笑又可悲',
-                '你在爱情里的每一次谎言，都是对自己的诅咒',
-                '背叛是你给自己挖的坟墓，迟早会把自己埋了',
-                '你所谓的承诺，就像放屁一样，毫无价值',
-                '你的爱就像毒酒，喝下去就会万劫不复',
-                '别再欺骗自己了，你就是个爱情的失败者',
-                '你在爱情里的自私，会让你孤独终老',
-                '背叛的代价，你迟早会承受不起',
-                '你的爱情就像破碎的镜子，再也无法复原',
-                '你把别人的真心践踏在脚下，迟早会遭到报应',
-                '别再装作无辜了，你就是个彻头彻尾的骗子',
-                '你的爱就像一阵风，吹过就散了，留不下任何痕迹'
-            ];
+        const curses = [
+                    '你所谓的爱情，不过是一场精心策划的骗局',
+                    '背叛就像你身上的刺青，永远无法抹去',
+                    '你的爱就像廉价的香水，闻着香却不持久',
+                    '别再装深情了，你的虚伪早已暴露无遗',
+                    '你把爱情当游戏，迟早会被游戏玩死',
+                    '你的忠诚就像纸糊的房子，一戳就破',
+                    '情人节对你来说，不过是又一个骗人的借口',
+                    '你在爱情里的演技，都能拿奥斯卡了',
+                    '别以为你能瞒天过海，你的丑事早已人尽皆知',
+                    '你的爱就像流星，一闪而过，毫无温度',
+                    '背叛的人就像过街老鼠，人人喊打',
+                    '你把真心喂了狗，现在只能自食恶果',
+                    '别再幻想有人会真心爱你，你配不上',
+                    '你的爱情就像一场闹剧，可笑又可悲',
+                    '你在爱情里的每一次谎言，都是对自己的诅咒',
+                    '背叛是你给自己挖的坟墓，迟早会把自己埋了',
+                    '你所谓的承诺，就像放屁一样，毫无价值',
+                    '你的爱就像毒酒，喝下去就会万劫不复',
+                    '别再欺骗自己了，你就是个爱情的失败者',
+                    '你在爱情里的自私，会让你孤独终老',
+                    '背叛的代价，你迟早会承受不起',
+                    '你的爱情就像破碎的镜子，再也无法复原',
+                    '你把别人的真心践踏在脚下，迟早会遭到报应',
+                    '别再装作无辜了，你就是个彻头彻尾的骗子',
+                    '你的爱就像一阵风，吹过就散了，留不下任何痕迹'
+                ];
 
             const curseContainer = document.getElementById('curseContainer');
             const usedPositions = [];
@@ -569,7 +565,6 @@
                     const div = document.createElement('div');
                     div.className = 'curse-text';
                     
-                    // 智能防重叠
                     let x, y;
                     let isOverlap = true;
                     while (isOverlap) {
@@ -620,13 +615,14 @@
         }
 
         // 音频循环
-        document.getElementById('ambientAudio').addEventListener('ended', function() {
-            this.currentTime = 0;
-            this.play();
+        ambientAudio.addEventListener('ended', () => {
+            ambientAudio.currentTime = 0;
+            ambientAudio.play();
         });
-        document.getElementById('whisperAudio').addEventListener('ended', function() {
-            this.currentTime = 0;
-            this.play();
+
+        whisperAudio.addEventListener('ended', () => {
+            whisperAudio.currentTime = 0;
+            whisperAudio.play();
         });
     </script>
 </body>
