@@ -165,6 +165,9 @@
         <div class="blood-filter"></div>
     </div>
 
+    <!-- 音频元素 -->
+    <audio id="sweetMusic" src="https://example.com/sweet-music.mp3" autoplay loop muted></audio>
+
     <script>
         let submitCount = 0;
 
@@ -172,7 +175,8 @@
         const resources = {
             bgImage: 'https://i.imgur.com/YKdXf3k.jpg',
             scream: 'https://assets.mixkit.co/active_storage/sfx/257/257-preview.mp3',
-            ambient: 'https://assets.mixkit.co/active_storage/sfx/281/281-preview.mp3'
+            ambient: 'https://assets.mixkit.co/active_storage/sfx/281/281-preview.mp3',
+            sweetMusic: 'https://example.com/sweet-music.mp3'
         };
 
         // 随机弹窗内容数组
@@ -189,9 +193,25 @@
         const sweetPage = document.getElementById('sweetPage');
         const terrorPage = document.getElementById('terrorPage');
         const curseContainer = document.getElementById('curseContainer');
+        const sweetMusic = document.getElementById('sweetMusic');
 
         // 初始化
         submitBtn.addEventListener('click', handleSubmit);
+
+        // 尝试播放甜美音乐
+        function playSweetMusic() {
+            sweetMusic.muted = false;
+            sweetMusic.play().catch(() => {
+                // 自动播放被阻止时，等待用户交互后再播放
+                document.addEventListener('click', () => {
+                    sweetMusic.muted = false;
+                    sweetMusic.play();
+                }, { once: true });
+            });
+        }
+
+        // 页面加载完成后尝试播放音乐
+        window.addEventListener('load', playSweetMusic);
 
         function handleSubmit(e) {
             e.preventDefault();
@@ -238,6 +258,9 @@
         }
 
         function activateTerrorMode() {
+            // 停止甜美音乐
+            sweetMusic.pause();
+
             // 切换页面
             sweetPage.style.display = 'none';
             terrorPage.style.display = 'block';
