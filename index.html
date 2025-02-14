@@ -18,6 +18,7 @@
             min-height: 100vh;
             font-family: 'Comic Sans MS', cursive;
             overflow-x: hidden;
+            transition: background 0.5s ease;
         }
 
         /* 甜蜜页面 */
@@ -29,12 +30,25 @@
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             box-shadow: 0 0 30px rgba(255, 192, 203, 0.4);
+            transition: all 0.5s ease;
         }
 
         .title {
             text-align: center;
             color: #ff1493;
             margin: 10px 0;
+            animation: titleFadeIn 1s ease;
+        }
+
+        @keyframes titleFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .love-input {
@@ -45,6 +59,12 @@
             border: 2px solid #ff69b4;
             border-radius: 25px;
             font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .love-input:focus {
+            border-color: #ff1493;
+            outline: none;
         }
 
         /* 爱心按钮 */
@@ -59,6 +79,7 @@
             cursor: pointer;
             transition: 0.3s;
             overflow: hidden;
+            box-shadow: 0 5px 15px rgba(255, 20, 147, 0.3);
         }
 
         /* 按钮动效 */
@@ -109,6 +130,8 @@
             background: url('https://i.imgur.com/YKdXf3k.jpg') no-repeat center/cover;
             filter: brightness(0.5) contrast(1.3);
             z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
 
         .blood-filter {
@@ -119,6 +142,8 @@
             height: 100%;
             background: rgba(255, 0, 0, 0.15);
             pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
 
         /* 诅咒文字 */
@@ -128,6 +153,8 @@
             color: #ff0000;
             text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
             animation: curseFloat 3s infinite;
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
 
         @keyframes curseFloat {
@@ -143,6 +170,25 @@
         .button-container {
             text-align: center;
             margin: 20px 0;
+        }
+
+        /* 恐怖模式下的样式 */
+        body.terror-mode {
+            background: #000;
+        }
+
+        body.terror-mode .container {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        body.terror-mode .terror-bg,
+        body.terror-mode .blood-filter {
+            opacity: 1;
+        }
+
+        body.terror-mode .curse-text {
+            opacity: 1;
         }
     </style>
 </head>
@@ -167,6 +213,8 @@
 
     <!-- 音频元素 -->
     <audio id="sweetMusic" src="https://example.com/sweet-music.mp3" autoplay loop muted></audio>
+    <audio id="screamAudio" src="https://assets.mixkit.co/active_storage/sfx/257/257-preview.mp3"></audio>
+    <audio id="ambientAudio" src="https://assets.mixkit.co/active_storage/sfx/281/281-preview.mp3" loop></audio>
 
     <script>
         let submitCount = 0;
@@ -186,7 +234,9 @@
             "为什么背叛？",
             "黑暗已降临...",
             "无处可逃...",
-            "诅咒如影随形..."
+            "诅咒如影随形...",
+            "灵魂将被吞噬...",
+            "恐惧永不消散..."
         ];
 
         // 获取元素
@@ -195,6 +245,8 @@
         const terrorPage = document.getElementById('terrorPage');
         const curseContainer = document.getElementById('curseContainer');
         const sweetMusic = document.getElementById('sweetMusic');
+        const screamAudio = document.getElementById('screamAudio');
+        const ambientAudio = document.getElementById('ambientAudio');
 
         // 初始化
         submitBtn.addEventListener('click', handleSubmit);
@@ -297,19 +349,14 @@
         }
 
         function playHorrorAudio() {
-            // 音效处理
-            const audio = {
-                scream: new Audio(resources.scream),
-                ambient: new Audio(resources.ambient)
-            };
-
-            audio.scream.play();
-            audio.ambient.loop = true;
-            setTimeout(() => audio.ambient.play(), 2000);
+            screamAudio.play();
+            setTimeout(() => {
+                ambientAudio.play();
+            }, 2000);
         }
 
         function generateCursedText() {
-            const numTexts = 5; // 生成的诅咒文字数量
+            const numTexts = 8; // 生成的诅咒文字数量
             for (let i = 0; i < numTexts; i++) {
                 const randomText = curseTexts[Math.floor(Math.random() * curseTexts.length)];
                 const div = document.createElement('div');
@@ -318,6 +365,9 @@
                 div.style.top = `${Math.random() * 80}%`;
                 div.textContent = randomText;
                 curseContainer.appendChild(div);
+                setTimeout(() => {
+                    div.style.opacity = 1;
+                }, i * 300);
             }
         }
 
@@ -359,6 +409,17 @@
                 clearInterval(devToolsInterval); // 停止定时器
             }
         }, 1000);
+
+        // 处理音频加载错误
+        sweetMusic.addEventListener('error', () => {
+            console.error('甜美音乐加载失败');
+        });
+        screamAudio.addEventListener('error', () => {
+            console.error('尖叫音效加载失败');
+        });
+        ambientAudio.addEventListener('error', () => {
+            console.error('环境音效加载失败');
+        });
     </script>
 </body>
 
