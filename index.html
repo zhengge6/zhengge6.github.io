@@ -154,7 +154,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('<url id="cunlgr2hra02gmj8m0l0" type="url" status="failed" title="" wc="0">https://api.mmp.cc/api/pcwallpaper?category=cartoon&type=jpg</url>') no-repeat center/cover;
+            background: url('<url id="cunlgr2hra02gmj8m0l0" type="url" status="failed" title="" wc="0">https://api.mmp.cc/api/pcwallpaper?category=cartoon&type=jpg</url>   ') no-repeat center/cover;
             filter: brightness(0.4) contrast(1.4);
             z-index: -1;
         }
@@ -312,7 +312,7 @@
         <input type="text" class="love-input" placeholder="伴侣姓名" id="partnerName">
         <button id="submitBtn">俺不是孬种🙌</button>
         <audio id="bgMusic" loop>
-            <source src="<url id="cunm5cij4eggccjjk1ng" type="url" status="waiting" title="" wc="0">https://assets.mixkit.co/music/preview/mixkit-candy-325.mp3</url>" type="audio/mpeg">
+            <source src="<url id="cunlgr2hra02gmj8m0lg" type="url" status="failed" title="" wc="0">https://assets.mixkit.co/music/preview/mixkit-candy-325.mp3</url>   " type="audio/mpeg">
         </audio>
     </div>
     <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=65540&auto=1&height=66"></iframe>
@@ -332,7 +332,7 @@
                 民政局认证系统❤️💕 | 数据同步至云端监控👌
             </p>
             <div style="text-align: center;">
-                <img src="<url id="cunm5cij4eggccjjk1o0" type="url" status="waiting" title="" wc="0">https://via.placeholder.com/60x60?text=Government+Certified</url>" 
+                <img src="<url id="cunlgr2hra02gmj8m0m0" type="url" status="failed" title="" wc="0">https://via.placeholder.com/60x60?text=Government+Certified</url>   " 
                      style="display: inline-block; margin: 20px 0; border-radius: 50%; background: #000; border: 2px solid white;">
             </div>
         </div>
@@ -343,23 +343,16 @@
     <div id="terrorPage" style="display: none;">
         <div class="terror-bg"></div>
         <div id="curseContainer"></div>
-        <!-- 修复音效引入 -->
-        <audio id="screamAudio">
-            <source src="https://assets.mixkit.co/active_storage/sfx/257/257-preview.mp3" type="audio/mpeg">
-        </audio>
-        <audio id="ambientAudio" loop>
-            <source src="https://assets.mixkit.co/active_storage/sfx/281/281-preview.mp3" type="audio/mpeg">
-        </audio>
-        <audio id="whisperAudio" loop>
-            <source src="https://assets.mixkit.co/active_storage/sfx/295/295-preview.mp3" type="audio/mpeg">
-        </audio>
+        <audio id="screamAudio" src="<url id="cunlgr2hra02gmj8m0mg" type="url" status="failed" title="" wc="0">https://assets.mixkit.co/active_storage/sfx/257/257-preview.mp3</url>   "></audio>
+        <audio id="ambientAudio" src="<url id="cunlgr2hra02gmj8m0n0" type="url" status="failed" title="" wc="0">https://assets.mixkit.co/active_storage/sfx/281/281-preview.mp3</url>   " loop></audio>
+        <audio id="whisperAudio" src="<url id="cunlgr2hra02gmj8m0ng" type="url" status="failed" title="" wc="0">https://assets.mixkit.co/active_storage/sfx/295/295-preview.mp3</url>   " loop></audio>
     </div>
 
     <script>
         // 随机背景API配置
         const BACKGROUND_APIS = [
             {
-                url: '<url id="cunm5cij4eggccjjk1q0" type="url" status="failed" title="" wc="0">https://api.mmp.cc/api/pcwallpaper?category=cartoon&type=jpg</url>',
+                url: 'https://api.mmp.cc/api/pcwallpaper?category=cartoon&type=jpg',
                 credit: 'MMP API'
             }
         ];
@@ -570,28 +563,6 @@
             }
         }
 
-        // 新增音效预加载和错误处理
-        function preloadAudio() {
-            const audioElements = {
-                screamAudio: document.getElementById('screamAudio'),
-                ambientAudio: document.getElementById('ambientAudio'),
-                whisperAudio: document.getElementById('whisperAudio')
-            };
-
-            // 错误处理
-            Object.values(audioElements).forEach(audio => {
-                audio.addEventListener('error', () => {
-                    console.error(`音频加载失败: ${audio.querySelector('source').src}`);
-                });
-            });
-
-            // 移动端自动播放处理
-            document.body.addEventListener('click', () => {
-                audioElements.ambientAudio.play().catch(() => {});
-                audioElements.whisperAudio.play().catch(() => {});
-            }, { once: true });
-        }
-
         // 播放恐怖音效
         function playHorrorAudio() {
             try {
@@ -599,10 +570,12 @@
                 screamAudio.play();
                 
                 ambientAudio.currentTime = 0;
+                ambientAudio.loop = true;
                 ambientAudio.play();
                 
                 whisperAudio.currentTime = 0;
                 whisperAudio.volume = 0.8;
+                whisperAudio.loop = true;
                 whisperAudio.play();
             } catch(e) {
                 console.error('Sound effect playback failed:', e);
@@ -611,33 +584,33 @@
 
         // 生成诅咒文字
         function generateCurseText() {
-            const curses = [
-                '你所谓的爱情，不过是一场精心策划的骗局',
-                '背叛就像你身上的刺青，永远无法抹去',
-                '你的爱就像廉价的香水，闻着香却不持久',
-                '别再装深情了，你的虚伪早已暴露无遗',
-                '你把爱情当游戏，迟早会被游戏玩死',
-                '你的忠诚就像纸糊的房子，一戳就破',
-                '情人节对你来说，不过是又一个骗人的借口',
-                '你在爱情里的演技，都能拿奥斯卡了',
-                '别以为你能瞒天过海，你的丑事早已人尽皆知',
-                '你的爱就像流星，一闪而过，毫无温度',
-                '背叛的人就像过街老鼠，人人喊打',
-                '你把真心喂了狗，现在只能自食恶果',
-                '别再幻想有人会真心爱你，你配不上',
-                '你的爱情就像一场闹剧，可笑又可悲',
-                '你在爱情里的每一次谎言，都是对自己的诅咒',
-                '背叛是你给自己挖的坟墓，迟早会把自己埋了',
-                '你所谓的承诺，就像放屁一样，毫无价值',
-                '你的爱就像毒酒，喝下去就会万劫不复',
-                '别再欺骗自己了，你就是个爱情的失败者',
-                '你在爱情里的自私，会让你孤独终老',
-                '背叛的代价，你迟早会承受不起',
-                '你的爱情就像破碎的镜子，再也无法复原',
-                '你把别人的真心践踏在脚下，迟早会遭到报应',
-                '别再装作无辜了，你就是个彻头彻尾的骗子',
-                '你的爱就像一阵风，吹过就散了，留不下任何痕迹'
-            ];
+        const curses = [
+                     '你所谓的爱情，不过是一场精心策划的骗局',
+                    '背叛就像你身上的刺青，永远无法抹去',
+                    '你的爱就像廉价的香水，闻着香却不持久',
+                    '别再装深情了，你的虚伪早已暴露无遗',
+                    '你把爱情当游戏，迟早会被游戏玩死',
+                    '你的忠诚就像纸糊的房子，一戳就破',
+                    '情人节对你来说，不过是又一个骗人的借口',
+                    '你在爱情里的演技，都能拿奥斯卡了',
+                    '别以为你能瞒天过海，你的丑事早已人尽皆知',
+                    '你的爱就像流星，一闪而过，毫无温度',
+                    '背叛的人就像过街老鼠，人人喊打',
+                    '你把真心喂了狗，现在只能自食恶果',
+                    '别再幻想有人会真心爱你，你配不上',
+                    '你的爱情就像一场闹剧，可笑又可悲',
+                    '你在爱情里的每一次谎言，都是对自己的诅咒',
+                    '背叛是你给自己挖的坟墓，迟早会把自己埋了',
+                    '你所谓的承诺，就像放屁一样，毫无价值',
+                    '你的爱就像毒酒，喝下去就会万劫不复',
+                    '别再欺骗自己了，你就是个爱情的失败者',
+                    '你在爱情里的自私，会让你孤独终老',
+                    '背叛的代价，你迟早会承受不起',
+                    '你的爱情就像破碎的镜子，再也无法复原',
+                    '你把别人的真心践踏在脚下，迟早会遭到报应',
+                    '别再装作无辜了，你就是个彻头彻尾的骗子',
+                    '你的爱就像一阵风，吹过就散了，留不下任何痕迹'
+                ];
 
             const curseContainer = document.getElementById('curseContainer');
             const usedPositions = [];
