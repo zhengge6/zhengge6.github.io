@@ -6,6 +6,7 @@
     <title>点进来就对了嘛</title>
     <style>
         /* 保持原有所有样式不变 */
+
         /* 新增背景容器样式 */
         .bg-container {
             position: fixed;
@@ -154,7 +155,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('https://api.mmp.cc/api/pcwallpaper?category=cartoon&type=jpg') no-repeat center/cover;
+            background: url('<url id="cunks3rua3d7p9fj4l40" type="url" status="failed" title="" wc="0">https://api.mmp.cc/api/pcwallpaper?category=cartoon&type=jpg</url> ') no-repeat center/cover;
             filter: brightness(0.4) contrast(1.4);
             z-index: -1;
         }
@@ -233,6 +234,69 @@
             z-index: 1001;
         }
 
+        /* 新增注意事项弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 30px;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            width: 80%;
+            max-width: 600px;
+            z-index: 1002;
+            text-align: center;
+            font-family: 'Arial', 'Microsoft YaHei', sans-serif;
+        }
+
+        .modal .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+            font-size: 24px;
+            color: #ff1493;
+        }
+
+        .modal-content {
+            margin: 20px 0;
+            font-size: 16px;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 15px;
+            color: #ff1493;
+            font-size: 28px;
+        }
+
+        .modal-content ul {
+            list-style-type: disc;
+            padding-left: 25px;
+            font-size: 15px;
+        }
+
+        .know-btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background: linear-gradient(90deg, #ff1493, #45a049);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .know-btn:hover {
+            background: linear-gradient(90deg, #45a049, #ff1493);
+        }
+
         /* 移动端适配 */
         @media (max-width: 768px) {
             .container { padding: 15px; }
@@ -244,10 +308,29 @@
             .redeem-btn { font-size: 16px; padding: 12px 30px; }
             .music-control { width: 30px; height: 30px; right: 10px; bottom: 10px; }
             .loading { width: 20px; height: 20px; }
+            .modal { padding: 20px; border-radius: 15px; width: 90%; }
+            .modal-content h2 { font-size: 22px; }
+            .know-btn { padding: 8px 20px; font-size: 16px; }
         }
     </style>
 </head>
 <body>
+    <!-- 新增注意事项弹窗 -->
+    <div id="noticeModal" class="modal">
+        <span class="close-btn" onclick="closeModal()">×</span>
+        <div class="modal-content">
+            <h2>🎉 测试页面请注意！🎉</h2>
+            <p>您正在访问的是一个测试页面，虽然看起来很炫酷，但请不要当真哦！</p>
+            <p>以下是需要您注意的几点事项：</p>
+            <ul>
+                <li>这是一条测试提醒，请勿过于认真。</li>
+                <li>页面中的内容纯属虚构，如有雷同，纯属巧合。</li>
+                <li>请谨慎对待页面中的信息，切勿随意相信。</li>
+            </ul>
+        </div>
+        <button class="know-btn" onclick="closeModal()">我已知晓</button>
+    </div>
+
     <!-- 新增背景容器 -->
     <div class="bg-container">
         <div class="loading"></div>
@@ -261,7 +344,7 @@
         <input type="text" class="love-input" placeholder="伴侣姓名" id="partnerName">
         <button id="submitBtn">俺不是孬种🙌</button>
         <audio id="bgMusic" loop>
-            <source src="https://assets.mixkit.co/music/preview/mixkit-candy-325.mp3" type="audio/mpeg">
+            <source src="<url id="cunks3rua3d7p9fj4l1g" type="url" status="failed" title="" wc="0">https://assets.mixkit.co/music/preview/mixkit-candy-325.mp3</url> " type="audio/mpeg">
         </audio>
     </div>
     <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=65540&auto=1&height=66"></iframe>
@@ -281,7 +364,7 @@
                 民政局认证系统❤️💕 | 数据同步至云端监控👌
             </p>
             <div style="text-align: center;">
-                <img src="https://via.placeholder.com/60x60?text=Government+Certified" 
+                <img src="<url id="cunks3rua3d7p9fj4l20" type="url" status="failed" title="" wc="0">https://via.placeholder.com/60x60?text=Government+Certified</url> " 
                      style="display: inline-block; margin: 20px 0; border-radius: 50%; background: #000; border: 2px solid white;">
             </div>
         </div>
@@ -292,16 +375,28 @@
     <div id="terrorPage" style="display: none;">
         <div class="terror-bg"></div>
         <div id="curseContainer"></div>
-        <audio id="screamAudio" src="https://assets.mixkit.co/active_storage/sfx/257/257-preview.mp3"></audio>
-        <audio id="ambientAudio" src="https://assets.mixkit.co/active_storage/sfx/281/281-preview.mp3" loop></audio>
-        <audio id="whisperAudio" src="https://assets.mixkit.co/active_storage/sfx/295/295-preview.mp3" loop></audio>
+        <audio id="screamAudio" src="<url id="cunks3rua3d7p9fj4l2g" type="url" status="failed" title="" wc="0">https://assets.mixkit.co/active_storage/sfx/257/257-preview.mp3</url> "></audio>
+        <audio id="ambientAudio" src="<url id="cunks3rua3d7p9fj4l30" type="url" status="failed" title="" wc="0">https://assets.mixkit.co/active_storage/sfx/281/281-preview.mp3</url> " loop></audio>
+        <audio id="whisperAudio" src="<url id="cunks3rua3d7p9fj4l3g" type="url" status="failed" title="" wc="0">https://assets.mixkit.co/active_storage/sfx/295/295-preview.mp3</url> " loop></audio>
     </div>
 
     <script>
+        // 页面加载时显示弹窗
+        window.onload = function() {
+            const modal = document.getElementById('noticeModal');
+            modal.style.display = 'block';
+        };
+
+        // 关闭弹窗
+        function closeModal() {
+            const modal = document.getElementById('noticeModal');
+            modal.style.display = 'none';
+        }
+
         // 随机背景API配置
         const BACKGROUND_APIS = [
             {
-                url: 'https://api.mmp.cc/api/pcwallpaper?category=cartoon&type=jpg',
+                url: '<url id="cunks3rua3d7p9fj4l40" type="url" status="failed" title="" wc="0">https://api.mmp.cc/api/pcwallpaper?category=cartoon&type=jpg</url> ',
                 credit: 'MMP API'
             }
         ];
@@ -313,25 +408,20 @@
             const bgImage = document.getElementById('bgImage');
 
             try {
-                // 随机选择API
                 const api = BACKGROUND_APIS[Math.floor(Math.random() * BACKGROUND_APIS.length)];
-                
-                // 创建图片预加载
                 const img = new Image();
                 img.src = api.url;
-                
+
                 await new Promise((resolve, reject) => {
                     img.onload = resolve;
                     img.onerror = reject;
                     setTimeout(() => reject(new Error('加载超时')), 5000);
                 });
 
-                // 替换背景
                 bgImage.src = img.src;
                 bgImage.style.display = 'block';
                 loader.style.display = 'none';
 
-                // 添加版权信息（如果存在）
                 if(api.credit) {
                     const credit = document.createElement('div');
                     credit.style.position = 'fixed';
@@ -350,11 +440,7 @@
         // 初始化加载背景
         document.addEventListener('DOMContentLoaded', () => {
             loadRandomBackground();
-            
-            // 每30分钟更换背景
             setInterval(loadRandomBackground, 30 * 60 * 1000);
-            
-            // 点击容器刷新背景
             document.querySelector('.bg-container').addEventListener('click', () => {
                 document.querySelector('.loading').style.display = 'block';
                 loadRandomBackground();
@@ -366,14 +452,12 @@
         const musicBtn = document.getElementById('musicBtn');
         let isMusicPlaying = false;
 
-        // 音乐控制逻辑
         musicBtn.addEventListener('click', () => {
             if(isMusicPlaying) {
                 bgMusic.pause();
                 musicBtn.textContent = ' minded towards pa-, itce Tasew thank you, - wei chang, Li W.';
             } else {
                 bgMusic.play().catch(() => {
-                    // 自动播放被阻止时，显示提示
                     musicBtn.textContent = '▶️';
                 });
                 musicBtn.textContent = '⏸️';
@@ -381,7 +465,6 @@
             isMusicPlaying = !isMusicPlaying;
         });
 
-        // 预加载所有音频
         function preloadAudio() {
             const audioElements = [bgMusic];
             audioElements.forEach(audio => {
@@ -391,19 +474,16 @@
                 });
             });
 
-            // 尝试自动播放背景音乐
             bgMusic.play().catch(() => {
                 musicBtn.style.display = 'block';
             });
         }
 
-        // 初始化音乐系统
         document.addEventListener('DOMContentLoaded', () => {
             preloadAudio();
-            bgMusic.volume = 0.5; // 调高背景音乐音量
+            bgMusic.volume = 0.5;
         });
 
-        // 初始化元素
         const submitBtn = document.getElementById('submitBtn');
         const progressLayer = document.querySelector('.progress-layer');
         const progressFill = document.querySelector('.progress-fill');
@@ -414,11 +494,8 @@
         const ambientAudio = document.getElementById('ambientAudio');
         const whisperAudio = document.getElementById('whisperAudio');
 
-        // 提交检测
         submitBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            
-            // 输入验证
             const yourName = document.getElementById('yourName').value.trim();
             const partnerName = document.getElementById('partnerName').value.trim();
             if (!yourName || !partnerName) {
@@ -430,11 +507,9 @@
                 return;
             }
 
-            // 进入进度界面
             document.querySelector('.container').style.display = 'none';
             progressLayer.style.display = 'block';
 
-            // 生成浮动文字
             for(let i = 0; i < 20; i++) {
                 const text = document.createElement('div');
                 text.className = 'scan-text';
@@ -447,14 +522,12 @@
                 progressLayer.appendChild(text);
             }
 
-            // 启动5秒进度条
             let progress = 0;
             const timer = setInterval(() => {
                 progress += 1;
                 progressFill.style.width = `${progress}%`;
                 progressText.textContent = `${progress}%`;
 
-                // 更真实的伪造分析提示
                 if (progress > 0 && progress <= 20) progressText.innerHTML = "🤣境外通信模式核查...";
                 else if (progress > 20 && progress <= 40) progressText.innerHTML = "😂社交账号验证...";
                 else if (progress > 40 && progress <= 60) progressText.innerHTML = "😒酒店预订数据比对...";
@@ -468,7 +541,6 @@
                 }
             }, 50);
 
-            // 点击加速机制
             let clicked = false;
             document.addEventListener('click', function accelerate() {
                 if (!clicked) {
@@ -480,7 +552,6 @@
             }, { once: true });
         });
 
-        // 跳转恐怖界面
         function enterTerrorMode() {
             if (confirm('检测发现你可能已出轨\n你将被记录进失信名单\n确定要查看后果吗？')) {
                 progressLayer.style.display = 'none';
@@ -488,33 +559,21 @@
                 terrorPage.style.display = 'block';
                 document.documentElement.requestFullscreen().catch(() => {});
 
-                // 播放恐怖音效
                 playHorrorAudio();
-
-                // 生成诅咒文字
                 generateCurseText();
-
-                // 防逃逸机制
                 preventEscape();
-
-                // 视觉干扰
                 visualInterference();
-
-                // 防开发者工具检测
                 detectDeveloperTools();
             }
         }
 
-        // 播放恐怖音效
         function playHorrorAudio() {
             try {
                 screamAudio.currentTime = 0;
                 screamAudio.play();
-                
                 ambientAudio.currentTime = 0;
                 ambientAudio.loop = true;
                 ambientAudio.play();
-                
                 whisperAudio.currentTime = 0;
                 whisperAudio.volume = 0.8;
                 whisperAudio.loop = true;
@@ -524,35 +583,34 @@
             }
         }
 
-        // 生成诅咒文字
         function generateCurseText() {
-        const curses = [
-                    '你所谓的爱情，不过是一场精心策划的骗局',
-                    '背叛就像你身上的刺青，永远无法抹去',
-                    '你的爱就像廉价的香水，闻着香却不持久',
-                    '别再装深情了，你的虚伪早已暴露无遗',
-                    '你把爱情当游戏，迟早会被游戏玩死',
-                    '你的忠诚就像纸糊的房子，一戳就破',
-                    '情人节对你来说，不过是又一个骗人的借口',
-                    '你在爱情里的演技，都能拿奥斯卡了',
-                    '别以为你能瞒天过海，你的丑事早已人尽皆知',
-                    '你的爱就像流星，一闪而过，毫无温度',
-                    '背叛的人就像过街老鼠，人人喊打',
-                    '你把真心喂了狗，现在只能自食恶果',
-                    '别再幻想有人会真心爱你，你配不上',
-                    '你的爱情就像一场闹剧，可笑又可悲',
-                    '你在爱情里的每一次谎言，都是对自己的诅咒',
-                    '背叛是你给自己挖的坟墓，迟早会把自己埋了',
-                    '你所谓的承诺，就像放屁一样，毫无价值',
-                    '你的爱就像毒酒，喝下去就会万劫不复',
-                    '别再欺骗自己了，你就是个爱情的失败者',
-                    '你在爱情里的自私，会让你孤独终老',
-                    '背叛的代价，你迟早会承受不起',
-                    '你的爱情就像破碎的镜子，再也无法复原',
-                    '你把别人的真心践踏在脚下，迟早会遭到报应',
-                    '别再装作无辜了，你就是个彻头彻尾的骗子',
-                    '你的爱就像一阵风，吹过就散了，留不下任何痕迹'
-                ];
+            const curses = [
+                '你所谓的爱情，不过是一场精心策划的骗局',
+                '背叛就像你身上的刺青，永远无法抹去',
+                '你的爱就像廉价的香水，闻着香却不持久',
+                '别再装深情了，你的虚伪早已暴露无遗',
+                '你把爱情当游戏，迟早会被游戏玩死',
+                '你的忠诚就像纸糊的房子，一戳就破',
+                '情人节对你来说，不过是又一个骗人的借口',
+                '你在爱情里的演技，都能拿奥斯卡了',
+                '别以为你能瞒天过海，你的丑事早已人尽皆知',
+                '你的爱就像流星，一闪而过，毫无温度',
+                '背叛的人就像过街老鼠，人人喊打',
+                '你把真心喂了狗，现在只能自食恶果',
+                '别再幻想有人会真心爱你，你配不上',
+                '你的爱情就像一场闹剧，可笑又可悲',
+                '你在爱情里的每一次谎言，都是对自己的诅咒',
+                '背叛是你给自己挖的坟墓，迟早会把自己埋了',
+                '你所谓的承诺，就像放屁一样，毫无价值',
+                '你的爱就像毒酒，喝下去就会万劫不复',
+                '别再欺骗自己了，你就是个爱情的失败者',
+                '你在爱情里的自私，会让你孤独终老',
+                '背叛的代价，你迟早会承受不起',
+                '你的爱情就像破碎的镜子，再也无法复原',
+                '你把别人的真心践踏在脚下，迟早会遭到报应',
+                '别再装作无辜了，你就是个彻头彻尾的骗子',
+                '你的爱就像一阵风，吹过就散了，留不下任何痕迹'
+            ];
 
             const curseContainer = document.getElementById('curseContainer');
             const usedPositions = [];
@@ -586,7 +644,6 @@
             });
         }
 
-        // 防逃逸机制
         function preventEscape() {
             document.addEventListener('contextmenu', e => e.preventDefault());
             document.addEventListener('keydown', e => {
@@ -594,7 +651,6 @@
             });
         }
 
-        // 视觉干扰
         function visualInterference() {
             setInterval(() => {
                 document.body.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
@@ -602,7 +658,6 @@
             }, 3000);
         }
 
-        // 防开发者工具检测
         function detectDeveloperTools() {
             setInterval(() => {
                 if (window.outerWidth - window.innerWidth > 200) {
@@ -611,7 +666,6 @@
             }, 1000);
         }
 
-        // 音频循环
         ambientAudio.addEventListener('ended', () => {
             ambientAudio.currentTime = 0;
             ambientAudio.play();
