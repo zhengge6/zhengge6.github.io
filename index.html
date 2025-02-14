@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -22,7 +21,7 @@
         }
 
         /* 甜蜜页面 */
-       .container {
+        #sweetPage {
             width: 95%;
             max-width: 800px;
             margin: 20px auto;
@@ -33,7 +32,7 @@
             transition: all 0.5s ease;
         }
 
-       .title {
+        .title {
             text-align: center;
             color: #ff1493;
             margin: 10px 0;
@@ -51,7 +50,7 @@
             }
         }
 
-       .love-input {
+        .love-input {
             display: block;
             width: 90%;
             margin: 15px auto;
@@ -62,7 +61,7 @@
             transition: border-color 0.3s ease;
         }
 
-       .love-input:focus {
+        .love-input:focus {
             border-color: #ff1493;
             outline: none;
         }
@@ -103,12 +102,12 @@
 
         /* 移动端适配 */
         @media (max-width: 768px) {
-           .container {
+            #sweetPage {
                 margin: 10px auto;
                 padding: 10px;
             }
 
-           .love-input {
+            .love-input {
                 width: 100%;
                 font-size: 14px;
                 padding: 10px;
@@ -120,13 +119,95 @@
             }
 
             /* 调整恐怖页面文字大小 */
-           .curse-text {
+            .curse-text {
                 font-size: 1.5em;
             }
         }
 
+        /* 绿色进度条页面 */
+        #greenPage {
+            display: none;
+            width: 100%;
+            height: 100vh;
+            background: #00FF00;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .green-page-text {
+            color: white;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .progress-container {
+            width: 80%;
+            max-width: 600px;
+            height: 30px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            margin: 20px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: white;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            position: absolute;
+            color: white;
+            font-size: 1.5em;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .green-text-div {
+            position: absolute;
+            color: black; /* 修改为黑色字体 */
+            font-size: 1.5em;
+            opacity: 0.8;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+            animation: floatText 3s ease infinite;
+        }
+
+        @keyframes floatText {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
         /* 恐怖页面样式 */
-       .terror-bg {
+        .terror-bg {
             position: fixed;
             top: 0;
             left: 0;
@@ -139,7 +220,7 @@
             transition: opacity 0.5s ease;
         }
 
-       .blood-filter {
+        .blood-filter {
             position: fixed;
             top: 0;
             left: 0;
@@ -152,8 +233,9 @@
         }
 
         /* 诅咒文字 */
-       .curse-text {
+        .curse-text {
             position: absolute;
+            color: white;
             text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
             animation: curseFloat 3s infinite;
             opacity: 0;
@@ -161,8 +243,7 @@
         }
 
         @keyframes curseFloat {
-            0%,
-            100% {
+            0%, 100% {
                 transform: translateY(0) rotate(-5deg);
             }
             50% {
@@ -170,7 +251,7 @@
             }
         }
 
-       .button-container {
+        .button-container {
             text-align: center;
             margin: 20px 0;
         }
@@ -180,7 +261,8 @@
             background: #000;
         }
 
-        body.terror-mode .container {
+        body.terror-mode #sweetPage,
+        body.terror-mode #greenPage {
             opacity: 0;
             pointer-events: none;
         }
@@ -195,7 +277,6 @@
         }
     </style>
 </head>
-
 <body>
     <!-- 甜蜜页面 -->
     <div id="sweetPage" class="container">
@@ -205,6 +286,17 @@
         <div class="button-container">
             <button id="submitBtn">开始测试</button>
         </div>
+    </div>
+
+    <!-- 绿色进度条页面 -->
+    <div id="greenPage">
+        <h1 class="green-page-text">正在生成你的爱情分数...</h1>
+        <div class="progress-container">
+            <div id="progressBar" class="progress-bar"></div>
+        </div>
+        <div id="progressText" class="progress-text">0%</div>
+        <!-- 生成20条“你被绿了”的文字 -->
+        <div id="greenTextContainer"></div>
     </div>
 
     <!-- 恐怖页面 -->
@@ -243,6 +335,7 @@
         // 获取元素
         const submitBtn = document.getElementById('submitBtn');
         const sweetPage = document.getElementById('sweetPage');
+        const greenPage = document.getElementById('greenPage');
         const terrorPage = document.getElementById('terrorPage');
         const curseContainer = document.getElementById('curseContainer');
         const sweetMusic = document.getElementById('sweetMusic');
@@ -256,7 +349,6 @@
         function playSweetMusic() {
             sweetMusic.muted = false;
             sweetMusic.play().catch(() => {
-                // 自动播放被阻止时，等待用户交互后再播放
                 document.addEventListener('click', () => {
                     sweetMusic.muted = false;
                     sweetMusic.play();
@@ -264,7 +356,6 @@
             });
         }
 
-        // 页面加载完成后尝试播放音乐
         window.addEventListener('load', playSweetMusic);
 
         function handleSubmit(e) {
@@ -284,28 +375,58 @@
                 return;
             }
 
-            activateTerrorMode();
-
-            // 添加爱心动效
-            createHearts(3);
+            activateGreenPage();
         }
 
-        function createHearts(count) {
-            for (let i = 0; i < count; i++) {
-                const heart = document.createElement('div');
-                heart.style.cssText = `
-                    position: absolute;
-                    left: ${50 + Math.random() * 20 - 10}%;
-                    top: 80%;
-                    font-size: 30px;
-                    animation: heartFloat ${2 + Math.random() * 2}s linear;
-                    opacity: 0;
-                `;
-                heart.innerHTML = '❤️';
-                document.body.appendChild(heart);
+        // 显示绿色进度条页面
+        function activateGreenPage() {
+            sweetPage.style.display = 'none';
+            greenPage.style.display = 'flex';
 
-                setTimeout(() => heart.remove(), 2000);
+            // 生成20条“你被绿了”文字
+            generateGreenText();
+
+            // 启动进度条
+            startProgressBar();
+        }
+
+        // 生成“你被绿了”文字
+        function generateGreenText() {
+            const greenTextContainer = document.getElementById('greenTextContainer');
+
+            for (let i = 0; i < 20; i++) {
+                const div = document.createElement('div');
+                div.className = 'green-text-div';
+                div.textContent = '你被绿了';
+
+                // 随机位置
+                div.style.top = `${Math.random() * 80}%`;
+                div.style.left = `${Math.random() * 80}%`;
+
+                greenTextContainer.appendChild(div);
             }
+        }
+
+        // 启动进度条
+        function startProgressBar() {
+            let progressBar = document.getElementById('progressBar');
+            let progressText = document.getElementById('progressText');
+            let currentPercent = 0;
+
+            const interval = setInterval(() => {
+                currentPercent += 10;
+
+                progressBar.style.width = `${currentPercent}%`;
+                progressText.style.opacity = 1;
+                progressText.innerHTML = `${currentPercent}%`;
+
+                if (currentPercent >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        activateTerrorMode();
+                    }, 1000); // 延迟1秒后进入恐怖模式
+                }
+            }, 500); // 每0.5秒更新一次进度
         }
 
         function activateTerrorMode() {
@@ -313,11 +434,11 @@
             sweetMusic.pause();
 
             // 切换页面
-            sweetPage.style.display = 'none';
+            greenPage.style.display = 'none';
             terrorPage.style.display = 'block';
             document.body.classList.add('terror-mode');
 
-            // 全屏处理，处理不同浏览器兼容性
+            // 全屏处理
             const elem = document.documentElement;
             if (elem.requestFullscreen) {
                 elem.requestFullscreen();
@@ -356,7 +477,6 @@
         function generateCursedText() {
             const numTexts = curseTexts.length;
             const usedPositions = [];
-            // 根据屏幕大小动态调整间距
             const padding = Math.min(window.innerWidth, window.innerHeight) * 0.2;
 
             for (let i = 0; i < numTexts; i++) {
@@ -370,12 +490,10 @@
 
                     for (let j = 0; j < usedPositions.length; j++) {
                         const pos = usedPositions[j];
-                        if (
-                            newLeft > pos.left - padding &&
+                        if (newLeft > pos.left - padding &&
                             newLeft < pos.left + padding &&
                             newTop > pos.top - padding &&
-                            newTop < pos.top + padding
-                        ) {
+                            newTop < pos.top + padding) {
                             isOverlapping = true;
                             break;
                         }
@@ -390,9 +508,7 @@
                 div.style.left = `${newLeft}px`;
                 div.style.top = `${newTop}px`;
                 div.style.color = colors[i % colors.length];
-                // 添加随机旋转角度
-                const randomRotation = Math.random() * 360;
-                div.style.transform = `rotate(${randomRotation}deg)`;
+                div.style.transform = `rotate(${Math.random() * 360}deg)`;
                 div.textContent = randomText;
                 curseContainer.appendChild(div);
                 setTimeout(() => {
@@ -403,14 +519,13 @@
 
         function startScreenShake() {
             const shakeInterval = setInterval(() => {
-                const shakeAmount = 10; // 震动幅度
+                const shakeAmount = 10;
                 const x = (Math.random() - 0.5) * shakeAmount;
                 const y = (Math.random() - 0.5) * shakeAmount;
                 document.body.style.transform = `translate(${x}px, ${y}px)`;
                 setTimeout(() => document.body.style.transform = '', 50);
             }, 100);
 
-            // 避免内存泄漏，在页面隐藏时清除定时器
             document.addEventListener('visibilitychange', () => {
                 if (document.visibilityState === 'hidden') {
                     clearInterval(shakeInterval);
@@ -421,12 +536,12 @@
         // 移动端触摸处理
         let lastTouch = 0;
         document.addEventListener('touchstart', e => {
-            if (e.touches.length > 2) { // 多指触摸触发
+            if (e.touches.length > 2) {
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
-                } else if (document.webkitExitFullscreen) { /* Safari */
+                } else if (document.webkitExitFullscreen) {
                     document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) { /* IE11 */
+                } else if (document.msExitFullscreen) {
                     document.msExitFullscreen();
                 }
             }
@@ -436,21 +551,14 @@
         const devToolsInterval = setInterval(() => {
             if (window.outerWidth - window.innerWidth > 200) {
                 document.body.innerHTML = '<h1 style="color:red">禁止窥探！</h1>';
-                clearInterval(devToolsInterval); // 停止定时器
+                clearInterval(devToolsInterval);
             }
         }, 1000);
 
-        // 处理音频加载错误
-        sweetMusic.addEventListener('error', () => {
-            console.error('甜美音乐加载失败');
-        });
-        screamAudio.addEventListener('error', () => {
-            console.error('尖叫音效加载失败');
-        });
-        ambientAudio.addEventListener('error', () => {
-            console.error('环境音效加载失败');
-        });
+        // 音频错误处理
+        sweetMusic.addEventListener('error', () => console.error('甜美音乐加载失败'));
+        screamAudio.addEventListener('error', () => console.error('尖叫音效加载失败'));
+        ambientAudio.addEventListener('error', () => console.error('环境音效加载失败'));
     </script>
 </body>
-
 </html>
