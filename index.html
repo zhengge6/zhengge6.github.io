@@ -179,13 +179,14 @@
             sweetMusic: 'https://example.com/sweet-music.mp3'
         };
 
-        // 随机弹窗内容数组
-        const randomMessages = [
-            "你已经逃不出来了",
-            "别白费力气了，逃不掉",
-            "黑暗已将你包围",
-            "诅咒已生效，无法逃脱",
-            "放弃挣扎吧，你在劫难逃"
+        // 随机诅咒文字
+        const curseTexts = [
+            "检测到不忠行为...",
+            "契约已生效...",
+            "为什么背叛？",
+            "黑暗已降临...",
+            "无处可逃...",
+            "诅咒如影随形..."
         ];
 
         // 获取元素
@@ -280,16 +281,7 @@
             initAntiEscape();
             generateCursedText();
             playHorrorAudio();
-
-            // 5 秒后开始疯狂弹窗
-            setTimeout(() => {
-                for (let i = 0; i < 99; i++) {
-                    setTimeout(() => {
-                        const randomIndex = Math.floor(Math.random() * randomMessages.length);
-                        alert(randomMessages[randomIndex]);
-                    }, i * 500); // 每个弹窗间隔 0.5 秒
-                }
-            }, 5000);
+            startScreenShake();
         }
 
         function initAntiEscape() {
@@ -314,33 +306,35 @@
             audio.scream.play();
             audio.ambient.loop = true;
             setTimeout(() => audio.ambient.play(), 2000);
+        }
 
-            // 屏幕震动
+        function generateCursedText() {
+            const numTexts = 5; // 生成的诅咒文字数量
+            for (let i = 0; i < numTexts; i++) {
+                const randomText = curseTexts[Math.floor(Math.random() * curseTexts.length)];
+                const div = document.createElement('div');
+                div.className = 'curse-text';
+                div.style.left = `${Math.random() * 80}%`;
+                div.style.top = `${Math.random() * 80}%`;
+                div.textContent = randomText;
+                curseContainer.appendChild(div);
+            }
+        }
+
+        function startScreenShake() {
             const shakeInterval = setInterval(() => {
-                document.body.style.transform = `translate(${Math.random() * 5}px, ${Math.random() * 5}px)`;
+                const shakeAmount = 10; // 震动幅度
+                const x = (Math.random() - 0.5) * shakeAmount;
+                const y = (Math.random() - 0.5) * shakeAmount;
+                document.body.style.transform = `translate(${x}px, ${y}px)`;
                 setTimeout(() => document.body.style.transform = '', 50);
-            }, 3000);
+            }, 100);
 
             // 避免内存泄漏，在页面隐藏时清除定时器
             document.addEventListener('visibilitychange', () => {
                 if (document.visibilityState === 'hidden') {
                     clearInterval(shakeInterval);
                 }
-            });
-        }
-
-        function generateCursedText() {
-            const texts = ["检测到不忠行为...", "契约已生效...", "为什么背叛？"];
-
-            texts.forEach((text, index) => {
-                setTimeout(() => {
-                    const div = document.createElement('div');
-                    div.className = 'curse-text';
-                    div.style.left = `${20 + index * 20}%`;
-                    div.style.top = `${30 + index * 15}%`;
-                    div.textContent = text;
-                    curseContainer.appendChild(div);
-                }, index * 2000);
             });
         }
 
