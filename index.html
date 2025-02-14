@@ -1,10 +1,44 @@
+在现代浏览器中，为了提供更好的用户体验和防止不必要的打扰，自动播放音频和视频的功能受到了限制。即使你在 `<audio>` 标签中设置了 `autoplay` 属性，浏览器也可能会阻止自动播放，尤其是当音频带有声音时（非静音状态）。以下是具体分析及解决方案：
+
+### 问题原因
+1. **浏览器自动播放策略**：大多数现代浏览器（如 Chrome、Safari 等）默认阻止带有声音的媒体自动播放。只有在满足特定条件时，才允许自动播放，比如用户已经与页面进行过交互（如点击、滚动等）。
+2. **跨域问题**：虽然这个音乐链接看起来是合法的，但如果服务器没有正确配置 CORS（跨域资源共享），浏览器可能会阻止音频加载。
+
+### 解决方案
+
+#### 1. 静音自动播放并等待用户交互
+可以先将音频设置为静音状态进行自动播放，然后在用户与页面进行交互后，再取消静音并继续播放。修改代码中的 `playSweetMusic` 函数如下：
+
+```javascript
+function playSweetMusic() {
+    sweetMusic.muted = false;
+    sweetMusic.play().catch(() => {
+        // 自动播放被阻止时，将音频静音并自动播放
+        sweetMusic.muted = true;
+        sweetMusic.play().then(() => {
+            // 等待用户交互后取消静音
+            document.addEventListener('click', () => {
+                sweetMusic.muted = false;
+            }, { once: true });
+        }).catch(error => {
+            console.error('音频播放出错:', error);
+        });
+    });
+}
+```
+
+#### 2. 检查跨域问题
+你可以通过浏览器的开发者工具（如 Chrome 的开发者工具）检查网络请求，看是否存在跨域错误。如果是跨域问题，需要联系音频资源的服务器管理员，让他们正确配置 CORS。
+
+#### 3. 完整修改后的代码示例
+```html
 <!DOCTYPE html>
 <html lang="zh-CN">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>测试</title>
+    <title>甜蜜告白信使</title>
     <style>
         /* 通用样式 */
         * {
@@ -221,7 +255,7 @@
 
         // 外链资源
         const resources = {
-            bgImage: 'https://pica.zhimg.com/80/v2-2051cd24fde511ddc186939a05ba49de_1440w.webp?source=1def8aca',
+            bgImage: 'https://i.imgur.com/YKdXf3k.jpg',
             scream: 'https://assets.mixkit.co/active_storage/sfx/257/257-preview.mp3',
             ambient: 'https://assets.mixkit.co/active_storage/sfx/281/281-preview.mp3',
             sweetMusic: 'https://ws.stream.qqmusic.qq.com/C400000rA4JG1njrS4.m4a?guid=169745647&vkey=A4E54A6AAA1F706E30F02F485C25B2580049F8B992E539146FB1F01EE4EFBA960D497441E4C261DD96AAA3EC3327484A09D5875EBC600861__v2b9abfbb&uin=&fromtag=120032&src=C400000b00nK1iJVRz.m4a'
