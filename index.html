@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>甜蜜告白信使</title>
+    <style>
+        /* 甜蜜风格CSS */
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            min-height: 100vh;
+            font-family: 'Comic Sans MS', cursive;
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(255,192,203,0.5);
+        }
+
+        .love-input {
+            display: block;
+            width: 80%;
+            margin: 20px auto;
+            padding: 15px;
+            border: 3px solid #ff69b4;
+            border-radius: 30px;
+            font-size: 18px;
+        }
+
+        #submitBtn {
+            background: #ff1493;
+            color: white;
+            padding: 20px 50px;
+            border: none;
+            border-radius: 30px;
+            font-size: 24px;
+            cursor: pointer;
+            transition: 0.3s;
+            transform: rotate(-3deg);
+            box-shadow: 0 10px 20px rgba(255,20,147,0.3);
+        }
+
+        #submitBtn:hover {
+            transform: scale(1.1) rotate(3deg);
+            background: #ff007f;
+        }
+
+        /* 恐怖风格CSS */
+        .terror-mode {
+            background: #000 !important;
+            color: #ff0000 !important;
+        }
+
+        .blood-filter {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,0,0,0.1);
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            20% { transform: scale(1.3); }
+            40% { transform: scale(1); }
+            60% { transform: scale(1.2); }
+            80% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        .curse-text {
+            position: absolute;
+            font-size: 3em;
+            animation: heartbeat 1.5s infinite;
+            text-shadow: 0 0 20px rgba(255,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+    <!-- 甜蜜页面 -->
+    <div id="sweetPage" class="container">
+        <h1 style="text-align: center; color: #ff1493;">❤️ 真爱告白生成器 ❤️</h1>
+        <input type="text" class="love-input" placeholder="你的名字" id="yourName">
+        <input type="text" class="love-input" placeholder="TA的名字" id="partnerName">
+        <div style="text-align: center;">
+            <button id="submitBtn">生成浪漫情书</button>
+        </div>
+    </div>
+
+    <!-- 恐怖页面 -->
+    <div id="terrorPage" style="display: none;">
+        <div id="darkParticles"></div>
+        <div id="curseContainer"></div>
+        <div class="blood-filter"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        let submitCount = 0;
+        const audioFiles = {
+            scream: 'scream.mp3',
+            heartbeat: 'heartbeat.wav',
+            ambient: 'ambient.mp3'
+        };
+
+        // 初始化音效
+        const audio = {
+            scream: new Audio(audioFiles.scream),
+            heartbeat: new Audio(audioFiles.heartbeat),
+            ambient: new Audio(audioFiles.ambient)
+        };
+
+        // 提交按钮事件
+        document.getElementById('submitBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            if(submitCount === 0) {
+                showPrivacyAlert();
+                submitCount++;
+            } else {
+                activateTerrorMode();
+            }
+        });
+
+        function showPrivacyAlert() {
+            if(confirm('请确认您已获得对方同意\n尊重隐私是爱情的第一步哦~')) {
+                // 第一次确认后无操作
+            }
+        }
+
+        function activateTerrorMode() {
+            // 切换页面
+            document.getElementById('sweetPage').style.display = 'none';
+            const terrorPage = document.getElementById('terrorPage');
+            terrorPage.style.display = 'block';
+            document.body.classList.add('terror-mode');
+
+            // 全屏模式
+            document.documentElement.requestFullscreen().catch(_ => {});
+
+            // 启动防逃逸
+            initAntiEscape();
+            
+            // 启动恐怖元素
+            initParticles();
+            generateCursedText();
+            playHorrorAudio();
+
+            // 添加血屏滤镜
+            const blood = document.createElement('div');
+            blood.className = 'blood-filter';
+            terrorPage.appendChild(blood);
+        }
+
+        function initAntiEscape() {
+            // 禁用右键
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            
+            // 禁用快捷键
+            document.addEventListener('keydown', e => {
+                if(e.key === 'F12' || e.ctrlKey || e.metaKey) e.preventDefault();
+            });
+
+            // 控制台陷阱
+            console.log('%c⚠️ 你已触发黑暗诅咒！⚠️', 
+                'color: red; font-size: 40px; font-weight: bold; text-shadow: 0 0 10px black;');
+        }
+
+        function playHorrorAudio() {
+            audio.scream.play();
+            audio.ambient.loop = true;
+            setTimeout(() => audio.ambient.play(), 2000);
+        }
+
+        // Three.js粒子系统
+        function initParticles() {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('darkParticles').appendChild(renderer.domElement);
+
+            const geometry = new THREE.BufferGeometry();
+            const vertices = [];
+            for (let i = 0; i < 5000; i++) {
+                vertices.push(
+                    Math.random() * 2000 - 1000,
+                    Math.random() * 2000 - 1000,
+                    Math.random() * 2000 - 1000
+                );
+            }
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+
+            const material = new THREE.PointsMaterial({ 
+                size: 2,
+                color: 0xFF0000,
+                transparent: true,
+                opacity: 0.7
+            });
+
+            const particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+            camera.position.z = 1000;
+
+            function animate() {
+                requestAnimationFrame(animate);
+                particles.rotation.x += 0.001;
+                particles.rotation.y += 0.002;
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+
+        // 诅咒文字生成
+        function generateCursedText() {
+            const texts = [
+                "检测到不忠行为...", 
+                "你永远逃不掉了...", 
+                "为什么要背叛？",
+                "你的灵魂属于这里..."
+            ];
+            
+            const container = document.getElementById('curseContainer');
+            texts.forEach((text, index) => {
+                setTimeout(() => {
+                    const div = document.createElement('div');
+                    div.className = 'curse-text';
+                    div.style.left = `${Math.random() * 80}%`;
+                    div.style.top = `${Math.random() * 80}%`;
+                    div.textContent = text;
+                    container.appendChild(div);
+                }, index * 3000);
+            });
+        }
+
+        // 开发者工具检测
+        setInterval(() => {
+            const threshold = 200;
+            if(window.outerWidth - window.innerWidth > threshold || 
+               window.outerHeight - window.innerHeight > threshold) {
+                document.body.innerHTML = '<h1 style="color: red">禁止窥探黑暗秘密！</h1>';
+                document.exitFullscreen();
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
