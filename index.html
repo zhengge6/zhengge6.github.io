@@ -213,15 +213,15 @@
 
     <!-- 音频元素 -->
     <audio id="sweetMusic" src="https://ws.stream.qqmusic.qq.com/C400000rA4JG1njrS4.m4a?guid=169745647&vkey=A4E54A6AAA1F706E30F02F485C25B2580049F8B992E539146FB1F01EE4EFBA960D497441E4C261DD96AAA3EC3327484A09D5875EBC600861__v2b9abfbb&uin=&fromtag=120032&src=C400000b00nK1iJVRz.m4a" autoplay loop muted></audio>
-    <audio id="screamAudio" src="https://ws.stream.qqmusic.qq.com/C400000rA4JG1njrS4.m4a?guid=169745647&vkey=A4E54A6AAA1F706E30F02F485C25B2580049F8B992E539146FB1F01EE4EFBA960D497441E4C261DD96AAA3EC3327484A09D5875EBC600861__v2b9abfbb&uin=&fromtag=120032&src=C400000b00nK1iJVRz.m4a"></audio>
-    <audio id="ambientAudio" src="https://ws.stream.qqmusic.qq.com/C400000rA4JG1njrS4.m4a?guid=169745647&vkey=A4E54A6AAA1F706E30F02F485C25B2580049F8B992E539146FB1F01EE4EFBA960D497441E4C261DD96AAA3EC3327484A09D5875EBC600861__v2b9abfbb&uin=&fromtag=120032&src=C400000b00nK1iJVRz.m4a" loop></audio>
+    <audio id="screamAudio" src="https://assets.mixkit.co/active_storage/sfx/257/257-preview.mp3"></audio>
+    <audio id="ambientAudio" src="https://assets.mixkit.co/active_storage/sfx/281/281-preview.mp3" loop></audio>
 
     <script>
         let submitCount = 0;
 
         // 外链资源
         const resources = {
-            bgImage: 'https://pica.zhimg.com/80/v2-2051cd24fde511ddc186939a05ba49de_1440w.webp?source=1def8aca',
+            bgImage: 'https://i.imgur.com/YKdXf3k.jpg',
             scream: 'https://assets.mixkit.co/active_storage/sfx/257/257-preview.mp3',
             ambient: 'https://assets.mixkit.co/active_storage/sfx/281/281-preview.mp3',
             sweetMusic: 'https://ws.stream.qqmusic.qq.com/C400000rA4JG1njrS4.m4a?guid=169745647&vkey=A4E54A6AAA1F706E30F02F485C25B2580049F8B992E539146FB1F01EE4EFBA960D497441E4C261DD96AAA3EC3327484A09D5875EBC600861__v2b9abfbb&uin=&fromtag=120032&src=C400000b00nK1iJVRz.m4a'
@@ -255,11 +255,16 @@
         function playSweetMusic() {
             sweetMusic.muted = false;
             sweetMusic.play().catch(() => {
-                // 自动播放被阻止时，等待用户交互后再播放
-                document.addEventListener('click', () => {
-                    sweetMusic.muted = false;
-                    sweetMusic.play();
-                }, { once: true });
+                // 自动播放被阻止时，将音频静音并自动播放
+                sweetMusic.muted = true;
+                sweetMusic.play().then(() => {
+                    // 等待用户交互后取消静音
+                    document.addEventListener('click', () => {
+                        sweetMusic.muted = false;
+                    }, { once: true });
+                }).catch(error => {
+                    console.error('音频播放出错:', error);
+                });
             });
         }
 
@@ -274,6 +279,12 @@
             const partnerName = document.getElementById('partnerName').value;
             if (!yourName || !partnerName) {
                 alert('请输入你的名字和TA的名字');
+                return;
+            }
+
+            // 验证是否输入“王政”
+            if (yourName === "王政" || partnerName === "王政") {
+                alert('不要不自量力');
                 return;
             }
 
@@ -388,39 +399,4 @@
             });
         }
 
-        // 移动端触摸处理
-        let lastTouch = 0;
-        document.addEventListener('touchstart', e => {
-            if (e.touches.length > 2) { // 多指触摸触发
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.webkitExitFullscreen) { /* Safari */
-                    document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) { /* IE11 */
-                    document.msExitFullscreen();
-                }
-            }
-        }, { passive: true });
-
-        // 防开发者工具
-        const devToolsInterval = setInterval(() => {
-            if (window.outerWidth - window.innerWidth > 200) {
-                document.body.innerHTML = '<h1 style="color:red">禁止窥探！</h1>';
-                clearInterval(devToolsInterval); // 停止定时器
-            }
-        }, 1000);
-
-        // 处理音频加载错误
-        sweetMusic.addEventListener('error', () => {
-            console.error('甜美音乐加载失败');
-        });
-        screamAudio.addEventListener('error', () => {
-            console.error('尖叫音效加载失败');
-        });
-        ambientAudio.addEventListener('error', () => {
-            console.error('环境音效加载失败');
-        });
-    </script>
-</body>
-
-</html>
+        //
