@@ -300,8 +300,8 @@
 
     <!-- 注意事项弹窗 -->
     <div class="popup" id="popup">
-        <h2>注意事项</h2>
-        <p>想听歌的网易云需要手动点一下播放！本站需要按钮来推动！</p>
+        <h2>😁注意事项😎</h2>
+        <p>想听歌的网易云音乐需要手动点一下，如果觉得背景图片不好看可以一直刷新哦！</p>
         <button onclick="closePopup()">朕知道了</button>
     </div>
 
@@ -503,7 +503,7 @@
                     animation-delay: ${Math.random() * 5}s;
                     transform: rotate(${15 + Math.random() * 30}deg);
                 `;
-                text.textContent = '你被绿了';
+                text.textContent = '哈哈哈，你被绿了，就是你';
                 progressLayer.appendChild(text);
             }
 
@@ -515,13 +515,13 @@
                 progressText.textContent = `${progress}%`;
 
                 // 更真实的伪造分析提示
-                if (progress > 0 && progress <= 20) progressText.innerHTML = " 查看你的手机数据❤️";
-                else if (progress > 50 && progress <= 60) progressText.innerHTML = "分析你的开房记录😘";
-                else progressText.innerHTML = "一览无余啊😍";
+                if (progress > 0 && progress <= 20) progressText.innerHTML = " 很快就好了";
+                else if (progress > 50 && progress <= 60) progressText.innerHTML = "真的别慌 ";
+                else progressText.innerHTML = "系统分析完成";
 
                 if (progress >= 100) {
                     clearInterval(timer);
-                    progressText.innerHTML = "都看完啦，点最下面的红色按钮，接受审判吧";
+                    progressText.innerHTML = "点击红色按钮吧";
                     redeemBtn.style.display = 'block';
                 }
             }, 50);
@@ -540,7 +540,7 @@
 
         // 跳转恐怖界面
         function enterTerrorMode() {
-            if (confirm('你出轨了\n 你将臭名昭著\n 你还要查看对你的处判吗？')) {
+            if (confirm('你已经找不到对象了\n You 已经被列为失信者名单\n 快来看看等待你的制裁吧')) {
                 progressLayer.style.display = 'none';
                 redeemBtn.style.display = 'none';
                 terrorPage.style.display = 'block';
@@ -584,8 +584,8 @@
 
         // 生成诅咒文字
         function generateCurseText() {
-      const curses = [
-                    '你所谓的爱情，不过是一场精心策划的骗局',
+        const curses = [
+                     '你所谓的爱情，不过是一场精心策划的骗局',
                     '背叛就像你身上的刺青，永远无法抹去',
                     '你的爱就像廉价的香水，闻着香却不持久',
                     '别再装深情了，你的虚伪早已暴露无遗',
@@ -611,6 +611,14 @@
                     '别再装作无辜了，你就是个彻头彻尾的骗子',
                     '你的爱就像一阵风，吹过就散了，留不下任何痕迹'
                 ];
+
+            const curseContainer = document.getElementById('curseContainer');
+            const usedPositions = [];
+
+            curses.forEach((text, index) => {
+                setTimeout(() => {
+                    const div = document.createElement('div');
+                    div.className = 'curse-text';
                     
                     let x, y;
                     let isOverlap = true;
