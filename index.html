@@ -20,6 +20,44 @@
             transition: background 0.5s ease;
         }
 
+        /* 背景容器样式 */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.2;
+            filter: blur(5px) brightness(1.1);
+        }
+
+        /* 加载动画 */
+        .loading {
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: #ff1493;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1001;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         /* 主界面 */
         .container {
             width: 95%;
@@ -120,15 +158,26 @@
         }
 
         /* 恐怖界面 */
-        .terror-bg {
+        .terror-bg-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('https://i.imgur.com/YKdXf3k.jpg') no-repeat center/cover;
-            filter: brightness(0.4) contrast(1.4);
             z-index: -1;
+            overflow: hidden;
+        }
+
+        .terror-bg {
+            display: none;
+        }
+
+        .terror-bg-container .bg-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3;
+            filter: blur(5px) brightness(0.6) contrast(1.2);
         }
 
         .curse-text {
@@ -201,6 +250,12 @@
     </style>
 </head>
 <body>
+    <!-- 新增背景容器 -->
+    <div class="bg-container">
+        <div class="loading"></div>
+        <img class="bg-image" id="bgImage" alt="随机背景">
+    </div>
+
     <!-- 主界面 -->
     <div class="container">
         <h1 class="title">❤️ 终极忠诚度检测系统 ❤️</h1>
@@ -230,6 +285,10 @@
 
     <!-- 恐怖界面 -->
     <div id="terrorPage" style="display: none;">
+        <div class="terror-bg-container">
+            <div class="loading"></div>
+            <img class="bg-image" id="terrorBgImage" alt="恐怖背景">
+        </div>
         <div class="terror-bg"></div>
         <div id="curseContainer"></div>
         <audio id="screamAudio" src="https://assets.mixkit.co/active_storage/sfx/257/257-preview.mp3"></audio>
@@ -238,6 +297,118 @@
     </div>
 
     <script>
+        // 主界面随机背景API配置
+        const BACKGROUND_APIS = [
+            {
+                url: 'https://api.mtyqx.cn/api/random.php', // 墨天逸二次元图片API
+                credit: '墨天逸随机图片API'
+            },
+            {
+                url: 'https://api.mtyqx.cn/xjjapi/random.php', // 墨天逸小姐姐图片API
+                credit: '墨天逸小姐姐图片API'
+            }
+        ];
+
+        // 加载主界面随机背景
+        async function loadRandomBackground() {
+            const bgContainer = document.querySelector('.bg-container');
+            const loader = bgContainer.querySelector('.loading');
+            const bgImage = document.getElementById('bgImage');
+
+            try {
+                const api = BACKGROUND_APIS[Math.floor(Math.random() * BACKGROUND_APIS.length)];
+                const img = new Image();
+                img.src = api.url;
+
+                await new Promise((resolve, reject) => {
+                    img.onload = resolve;
+                    img.onerror = reject;
+                    setTimeout(() => reject(new Error('加载超时')), 5000);
+                });
+
+                bgImage.src = img.src;
+                bgImage.style.display = 'block';
+                loader.style.display = 'none';
+
+                if(api.credit) {
+                    const credit = document.createElement('div');
+                    credit.style.position = 'fixed';
+                    credit.style.bottom = '10px';
+                    credit.style.right = '10px';
+                    credit.style.color = 'rgba(255,255,255,0.5)';
+                    credit.style.fontSize = '12px';
+                    credit.textContent = `背景来源: ${api.credit}`;
+                    document.body.appendChild(credit);
+                }
+            } catch (error) {
+                console.error('背景加载失败:', error);
+                loader.style.display = 'none';
+            }
+        }
+
+        // 初始化主界面背景
+        document.addEventListener('DOMContentLoaded', () => {
+            loadRandomBackground();
+            
+            // 每30分钟更换主界面背景
+            setInterval(loadRandomBackground, 30 * 60 * 1000);
+            
+            // 点击容器刷新主界面背景
+            document.querySelector('.bg-container').addEventListener('click', () => {
+                document.querySelector('.loading').style.display = 'block';
+                loadRandomBackground();
+            });
+        });
+
+        // 恐怖界面随机背景API配置
+        const TERROR_BACKGROUND_APIS = [
+            {
+                url: 'https://api.mtyqx.cn/api/random.php', // 墨天逸二次元图片API
+                credit: '墨天逸随机图片API'
+            },
+            {
+                url: 'https://api.mtyqx.cn/xjjapi/random.php', // 墨天逸小姐姐图片API
+                credit: '墨天逸小姐姐图片API'
+            }
+        ];
+
+        // 加载恐怖界面随机背景
+        async function loadTerrorBackground() {
+            const terrorBgContainer = document.querySelector('.terror-bg-container');
+            const loader = terrorBgContainer.querySelector('.loading');
+            const bgImage = document.getElementById('terrorBgImage');
+
+            try {
+                const api = TERROR_BACKGROUND_APIS[Math.floor(Math.random() * TERROR_BACKGROUND_APIS.length)];
+                const img = new Image();
+                img.src = api.url;
+
+                await new Promise((resolve, reject) => {
+                    img.onload = resolve;
+                    img.onerror = reject;
+                    setTimeout(() => reject(new Error('加载超时')), 5000);
+                });
+
+                bgImage.src = img.src;
+                bgImage.style.display = 'block';
+                loader.style.display = 'none';
+
+                if(api.credit) {
+                    const credit = document.createElement('div');
+                    credit.style.position = 'fixed';
+                    credit.style.bottom = '10px';
+                    credit.style.right = '10px';
+                    credit.style.color = 'rgba(255,255,255,0.5)';
+                    credit.style.fontSize = '12px';
+                    credit.textContent = `恐怖背景来源: ${api.credit}`;
+                    document.body.appendChild(credit);
+                }
+            } catch (error) {
+                console.error('恐怖背景加载失败:', error);
+                loader.style.display = 'none';
+            }
+        }
+
         // 初始化元素
         const submitBtn = document.getElementById('submitBtn');
         const progressLayer = document.querySelector('.progress-layer');
@@ -320,97 +491,132 @@
                 terrorPage.style.display = 'block';
                 document.documentElement.requestFullscreen().catch(() => {});
 
-                // 播放音效
-                const screamAudio = document.getElementById('screamAudio');
-                const ambientAudio = document.getElementById('ambientAudio');
-                const whisperAudio = document.getElementById('whisperAudio');
-                screamAudio.play();
-                ambientAudio.loop = true;
-                whisperAudio.loop = true;
-                setTimeout(() => {
-                    ambientAudio.play();
-                    whisperAudio.play();
-                }, 2000);
+                // 加载恐怖界面随机背景
+                loadTerrorBackground();
+                setInterval(loadTerrorBackground, 30 * 60 * 1000);
 
-                // 生成20条诅咒文字
-                const curses = [
-                    '你所谓的爱情，不过是一场精心策划的骗局',
-                    '背叛就像你身上的刺青，永远无法抹去',
-                    '你的爱就像廉价的香水，闻着香却不持久',
-                    '别再装深情了，你的虚伪早已暴露无遗',
-                    '你把爱情当游戏，迟早会被游戏玩死',
-                    '你的忠诚就像纸糊的房子，一戳就破',
-                    '情人节对你来说，不过是又一个骗人的借口',
-                    '你在爱情里的演技，都能拿奥斯卡了',
-                    '别以为你能瞒天过海，你的丑事早已人尽皆知',
-                    '你的爱就像流星，一闪而过，毫无温度',
-                    '背叛的人就像过街老鼠，人人喊打',
-                    '你把真心喂了狗，现在只能自食恶果',
-                    '别再幻想有人会真心爱你，你配不上',
-                    '你的爱情就像一场闹剧，可笑又可悲',
-                    '你在爱情里的每一次谎言，都是对自己的诅咒',
-                    '背叛是你给自己挖的坟墓，迟早会把自己埋了',
-                    '你所谓的承诺，就像放屁一样，毫无价值',
-                    '你的爱就像毒酒，喝下去就会万劫不复',
-                    '别再欺骗自己了，你就是个爱情的失败者',
-                    '你在爱情里的自私，会让你孤独终老',
-                    '背叛的代价，你迟早会承受不起',
-                    '你的爱情就像破碎的镜子，再也无法复原',
-                    '你把别人的真心践踏在脚下，迟早会遭到报应',
-                    '别再装作无辜了，你就是个彻头彻尾的骗子',
-                    '你的爱就像一阵风，吹过就散了，留不下任何痕迹'
-                ];
+                // 播放恐怖音效
+                playHorrorAudio();
 
-                // 动态布局
-                const usedPositions = [];
-                curses.forEach((text, index) => {
-                    setTimeout(() => {
-                        const div = document.createElement('div');
-                        div.className = 'curse-text';
-                        
-                        // 智能防重叠
-                        let x, y;
-                        let isOverlap = true;
-                        while (isOverlap) {
-                            x = 5 + Math.random() * 90;
-                            y = 10 + Math.random() * 80;
-                            isOverlap = usedPositions.some(pos => 
-                                Math.sqrt(Math.pow(pos.x - x, 2) + Math.pow(pos.y - y, 2)) < 20
-                            );
-                        }
-                        usedPositions.push({ x, y });
-
-                        div.style.cssText = `
-                            left: ${x}%;
-                            top: ${y}%;
-                            color: hsl(${Math.random() * 360}, 70%, 50%);
-                            transform: rotate(${Math.random() * 30 - 15}deg);
-                            animation-delay: ${index * 0.3}s;
-                        `;
-                        div.textContent = text;
-                        document.getElementById('curseContainer').appendChild(div);
-                    }, index * 300);
-                });
+                // 生成诅咒文字
+                generateCurseText();
 
                 // 防逃逸机制
-                document.addEventListener('contextmenu', e => e.preventDefault());
-                document.addEventListener('keydown', e => {
-                    if (e.key === 'F12' || e.ctrlKey || e.metaKey) e.preventDefault();
-                });
+                preventEscape();
 
                 // 视觉干扰
-                setInterval(() => {
-                    document.body.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
-                    setTimeout(() => document.body.style.filter = '', 50);
-                }, 3000);
+                visualInterference();
 
                 // 防开发者工具检测
-                setInterval(() => {
-                    if (window.outerWidth - window.innerWidth > 200) {
-                        document.body.innerHTML = '<h1 style="color:red;text-align:center;margin-top:50px">⚠️ 非法访问已记录 ⚠️</h1>';
-                    }
-                }, 1000);
+                detectDeveloperTools();
             }
+        }
+
+        // 播放恐怖音效
+        function playHorrorAudio() {
+            try {
+                screamAudio.currentTime = 0;
+                screamAudio.play();
+                
+                ambientAudio.currentTime = 0;
+                ambientAudio.loop = true;
+                ambientAudio.play();
+                
+                whisperAudio.currentTime = 0;
+                whisperAudio.volume = 0.8;
+                whisperAudio.loop = true;
+                whisperAudio.play();
+            } catch(e) {
+                console.error('音效播放失败:', e);
+            }
+        }
+
+        // 生成诅咒文字
+        function generateCurseText() {
+            const curses = [
+                '你所谓的爱情，不过是一场精心策划的骗局',
+                '背叛就像你身上的刺青，永远无法抹去',
+                '你的爱就像廉价的香水，闻着香却不持久',
+                '别再装深情了，你的虚伪早已暴露无遗',
+                '你把爱情当游戏，迟早会被游戏玩死',
+                '你的忠诚就像纸糊的房子，一戳就破',
+                '情人节对你来说，不过是又一个骗人的借口',
+                '你在爱情里的演技，都能拿奥斯卡了',
+                '别以为你能瞒天过海，你的丑事早已人尽皆知',
+                '你的爱就像流星，一闪而过，毫无温度',
+                '背叛的人就像过街老鼠，人人喊打',
+                '你把真心喂了狗，现在只能自食恶果',
+                '别再幻想有人会真心爱你，你配不上',
+                '你的爱情就像一场闹剧，可笑又可悲',
+                '你在爱情里的每一次谎言，都是对自己的诅咒',
+                '背叛是你给自己挖的坟墓，迟早会把自己埋了',
+                '你所谓的承诺，就像放屁一样，毫无价值',
+                '你的爱就像毒酒，喝下去就会万劫不复',
+                '别再欺骗自己了，你就是个爱情的失败者',
+                '你在爱情里的自私，会让你孤独终老',
+                '背叛的代价，你迟早会承受不起',
+                '你的爱情就像破碎的镜子，再也无法复原',
+                '你把别人的真心践踏在脚下，迟早会遭到报应',
+                '别再装作无辜了，你就是个彻头彻尾的骗子',
+                '你的爱就像一阵风，吹过就散了，留不下任何痕迹'
+            ];
+
+            const curseContainer = document.getElementById('curseContainer');
+            const usedPositions = [];
+
+            curses.forEach((text, index) => {
+                setTimeout(() => {
+                    const div = document.createElement('div');
+                    div.className = 'curse-text';
+                    
+                    // 智能防重叠
+                    let x, y;
+                    let isOverlap = true;
+                    while (isOverlap) {
+                        x = 5 + Math.random() * 90;
+                        y = 10 + Math.random() * 80;
+                        isOverlap = usedPositions.some(pos => 
+                            Math.sqrt(Math.pow(pos.x - x, 2) + Math.pow(pos.y - y, 2)) < 20
+                        );
+                    }
+                    usedPositions.push({ x, y });
+
+                    div.style.cssText = `
+                        left: ${x}%;
+                        top: ${y}%;
+                        color: hsl(${Math.random() * 360}, 70%, 50%);
+                        transform: rotate(${Math.random() * 30 - 15}deg);
+                        animation-delay: ${index * 0.3}s;
+                    `;
+                    div.textContent = text;
+                    curseContainer.appendChild(div);
+                }, index * 300);
+            });
+        }
+
+        // 防逃逸机制
+        function preventEscape() {
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('keydown', e => {
+                if (e.key === 'F12' || e.ctrlKey || e.metaKey) e.preventDefault();
+            });
+        }
+
+        // 视觉干扰
+        function visualInterference() {
+            setInterval(() => {
+                document.body.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
+                setTimeout(() => document.body.style.filter = '', 50);
+            }, 3000);
+        }
+
+        // 防开发者工具检测
+        function detectDeveloperTools() {
+            setInterval(() => {
+                if (window.outerWidth - window.innerWidth > 200) {
+                    document.body.innerHTML = '<h1 style="color:red;text-align:center;margin-top:50px">⚠️ 非法访问已记录 ⚠️</h1>';
+                }
+            }, 1000);
         }
 
         // 音频循环
