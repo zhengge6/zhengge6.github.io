@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>情人节情感安全检测</title>
+    <title>赣榆情感忠诚度检测器</title>
     <style>
         /* 保持原有所有样式不变 */
         /* 新增背景容器样式 */
@@ -266,6 +266,7 @@
             <source src="https://assets.mixkit.co/music/preview/mixkit-candy-325.mp3" type="audio/mpeg">
         </audio>
     </div>
+    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=65540&auto=1&height=66"></iframe>
 
     <!-- 音乐控制按钮 -->
     <div class="music-control" id="musicBtn"> minded towards pa-, itce Tasew thank you, - wei chang, Li W.</div>
@@ -340,13 +341,11 @@
                     credit.style.right = '10px';
                     credit.style.color = 'rgba(255,255,255,0.5)';
                     credit.style.fontSize = '12px';
-                    credit.textContent = `背景来源: ${api.credit}`;
+                    credit.textContent = `ZHENG: ${api.credit}`;
                     document.body.appendChild(credit);
                 }
             } catch (error) {
                 console.error('背景加载失败:', error);
-                // 使用透明背景
-                loader.style.display = 'none';
             }
         }
 
