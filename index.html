@@ -2,10 +2,10 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>情人节终极忠诚检测</title>
     <style>
-        /* 全局样式 */
+        /* 基础样式 */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -13,406 +13,414 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #fff;
-            color: #f00;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
             min-height: 100vh;
+            font-family: 'Comic Sans MS', cursive;
+            overflow-x: hidden;
             transition: background 0.5s ease;
         }
 
-        /* 甜蜜页面 */
-        .sweet-page {
-            width: 80%;
+        /* 主界面 */
+        .container {
+            width: 95%;
             max-width: 800px;
-            margin: 50px auto;
+            margin: 20px auto;
             padding: 20px;
-            background: #fff;
+            background: rgba(255,255,255,0.95);
             border-radius: 15px;
-            box-shadow: 0 0 20px rgba(255,0,0,0.2);
+            box-shadow: 0 0 30px rgba(255,192,203,0.4);
+            transition: all 0.5s ease;
         }
 
-        .sweet-page h1 {
+        .title {
             text-align: center;
-            color: #ff69b4;
-            font-size: 2.5em;
-            margin-bottom: 20px;
+            color: #ff1493;
+            margin: 15px 0;
+            animation: titleFade 1s ease;
         }
 
-        .sweet-page input {
+        @keyframes titleFade {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .love-input {
             display: block;
-            width: 80%;
-            margin: 10px auto;
-            padding: 10px;
+            width: 90%;
+            margin: 15px auto;
+            padding: 12px;
             border: 2px solid #ff69b4;
-            border-radius: 20px;
+            border-radius: 25px;
+            font-size: 16px;
             transition: border-color 0.3s ease;
         }
 
-        .sweet-page input:focus {
-            outline: none;
-            border-color: #ff1493;
-        }
-
-        .sweet-page button {
-            display: block;
-            margin: 20px auto;
-            padding: 15px 40px;
-            background: #ff1493;
-            color: #fff;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 1.2em;
-        }
-
-        /* 绿色进度条页面 */
-        .green-page {
+        /* 进度条界面 */
+        .progress-layer {
             display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 100vh;
-            background: #008000;
-            color: #000;
-            position: relative;
+            height: 100%;
+            background: #00ff00;
+            z-index: 1000;
         }
 
-        .green-page h1 {
-            font-size: 2.5em;
-            text-align: center;
-            margin-top: 50px;
-        }
-
-        .progress-container {
-            width: 80%;
-            max-width: 600px;
-            height: 30px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 15px;
-            overflow: hidden;
+        .scan-text {
             position: absolute;
-            top: 30px;
+            font-size: 24px;
+            color: rgba(0,0,0,0.3);
+            animation: textFloat 8s linear infinite;
+            transform: rotate(15deg);
+        }
+
+        @keyframes textFloat {
+            0% { transform: translateY(110vh) rotate(15deg); }
+            100% { transform: translateY(-110vh) rotate(15deg); }
+        }
+
+        .progress-box {
+            position: absolute;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 600px;
+            background: rgba(255,255,255,0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.3);
         }
 
         .progress-bar {
-            height: 100%;
-            background: #fff;
+            height: 40px;
+            background: #e0e0e0;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
             width: 0%;
-            transition: width 0.5s ease;
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            transition: width 0.3s ease-in-out;
         }
 
         .progress-text {
             position: absolute;
-            top: 70px;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, -50%);
             color: #fff;
-            font-size: 1.5em;
-            opacity: 0;
-            transition: opacity 0.5s ease;
+            font-weight: bold;
+            font-size: 18px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
-        .green-text {
-            position: absolute;
+        /* 恐怖界面 */
+        .terror-bg {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            align-content: space-around;
-        }
-
-        .green-text div {
-            color: #000;
-            font-size: 1.5em;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-            animation: float 3s infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0); }
-        }
-
-        /* 恐怖页面 */
-        .terror-page {
-            display: none;
-            width: 100%;
-            height: 100vh;
-            background: url('https://i.imgur.com/YKdXf3k.jpg') center/cover;
-            filter: brightness(0.5) contrast(1.3);
-            position: relative;
-        }
-
-        .blood-filter {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255,0,0,0.1);
-        }
-
-        .curse-container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            align-content: space-around;
+            background: url('https://i.imgur.com/YKdXf3k.jpg') no-repeat center/cover;
+            filter: brightness(0.4) contrast(1.4);
+            z-index: -1;
         }
 
         .curse-text {
-            color: #fff;
+            position: absolute;
             font-size: 1.8em;
-            text-shadow: 0 0 10px rgba(255,0,0,0.7);
-            animation: curseAppear 2s forwards;
+            text-shadow: 0 0 20px rgba(255,0,0,0.7);
             opacity: 0;
-            transition: opacity 0.5s ease;
+            animation: curseAppear 2s forwards, curseFloat 3s infinite;
         }
 
         @keyframes curseAppear {
-            from { opacity: 0; transform: scale(0); }
-            to { opacity: 1; transform: scale(1); }
+            from { opacity: 0; transform: scale(0) rotate(-180deg); }
+            to { opacity: 1; transform: scale(1) rotate(0); }
+        }
+
+        @keyframes curseFloat {
+            0%, 100% { transform: translateY(0) rotate(-3deg); }
+            50% { transform: translateY(-25px) rotate(3deg); }
         }
 
         /* 按钮样式 */
-        .continue-btn {
+        #submitBtn {
+            display: block;
+            margin: 20px auto;
+            padding: 15px 50px;
+            background: #ff1493;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(255,20,147,0.4);
+        }
+
+        .redeem-btn {
             display: none;
-            position: fixed;
+            position: absolute;
             bottom: 50px;
             left: 50%;
             transform: translateX(-50%);
             padding: 15px 40px;
-            background: #ff1493;
-            color: #fff;
+            background: #ff0000;
+            color: white;
             border: none;
-            border-radius: 20px;
+            border-radius: 30px;
+            font-size: 18px;
             cursor: pointer;
-            font-size: 1.2em;
+            transition: transform 0.2s ease-in-out;
         }
 
-        /* 媒体查询 */
+        .redeem-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .redeem-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* 移动端适配 */
         @media (max-width: 768px) {
-            .sweet-page { width: 90%; margin: 30px auto; }
-            .sweet-page input { width: 90%; }
-            .sweet-page button { padding: 10px 20px; font-size: 1em; }
-            .green-page h1 { font-size: 2em; }
-            .progress-container { width: 90%; }
-            .progress-text { font-size: 1.2em; }
-            .green-text div { font-size: 1.2em; }
+            .container { padding: 15px; }
+            .love-input { font-size: 14px; padding: 10px; }
+            #submitBtn { padding: 12px 30px; font-size: 18px; }
+            .scan-text { font-size: 18px; }
             .curse-text { font-size: 1.2em; }
+            .progress-box { width: 95%; padding: 15px; }
+            .redeem-btn { font-size: 16px; padding: 12px 30px; }
         }
     </style>
 </head>
 <body>
-    <!-- 甜蜜页面 -->
-    <div class="sweet-page">
-        <h1>🌀 情人节终极忠诚检测 🌬️</h1>
-        <input type="text" placeholder="你的名字" id="yourName">
-        <input type="text" placeholder="TA的名字" id="partnerName">
-        <button id="testBtn">＞开始检测>New 0912.fft</button>
+    <!-- 主界面 -->
+    <div class="container">
+        <h1 class="title">❤️ 终极忠诚度检测系统 ❤️</h1>
+        <input type="text" class="love-input" placeholder="你的姓名" id="yourName">
+        <input type="text" class="love-input" placeholder="伴侣姓名" id="partnerName">
+        <button id="submitBtn">开始深度检测</button>
     </div>
 
-    <!-- 绿色进度条页面 -->
-    <div class="green-page">
-        <h1>💡 检测结果：你被绿了 🟢</h1>
-        <div class="progress-container">
-            <div class="progress-bar"></div>
+    <!-- 进度条界面 -->
+    <div class="progress-layer">
+        <div class="progress-box">
+            <h2 style="color:#2e7d32; text-align:center; margin-bottom:20px;">🔍 情感AI深度扫描中...</h2>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+                <div class="progress-text">0%</div>
+            </div>
+            <p style="text-align:center; margin-top:15px; color:#666; font-size:14px;">
+                民政部认证系统 | 数据同步至云端监控
+            </p>
+            <div style="text-align: center;">
+                <img src="https://via.placeholder.com/60x60?text=Government+Certified" 
+                     style="display: inline-block; margin: 20px 0; border-radius: 50%; background: #000; border: 2px solid white;">
+            </div>
         </div>
-        <div class="progress-text">0%</div>
-        <div class="green-text"></div>
-        <button class="continue-btn" onclick="enterTerrorMode()">点击进入恐怖页面</button>
+        <button class="redeem-btn" onclick="enterTerrorMode()">查看结果</button>
     </div>
 
-    <!-- 恐怖页面 -->
-    <div class="terror-page">
-        <div class="blood-filter"></div>
+    <!-- 恐怖界面 -->
+    <div id="terrorPage" style="display: none;">
+        <div class="terror-bg"></div>
         <div id="curseContainer"></div>
+        <audio id="screamAudio" src="https://assets.mixkit.co/active_storage/sfx/257/257-preview.mp3"></audio>
+        <audio id="ambientAudio" src="https://assets.mixkit.co/active_storage/sfx/281/281-preview.mp3" loop></audio>
+        <audio id="whisperAudio" src="https://assets.mixkit.co/active_storage/sfx/295/295-preview.mp3" loop></audio>
     </div>
-
-    <!-- 音频元素 -->
-    <audio id="ambientAudio" src="https://assets.mixkit.co/active_storage/sfx/281/281-preview.mp3" loop muted></audio>
-    <audio id="screamAudio" src="https://assets.mixkit.co/active_storage/sfx/257/257-preview.mp3"></audio>
-    <audio id="whisperAudio" src="https://assets.mixkit.co/active_storage/sfx/295/295-preview.mp3" loop></audio>
 
     <script>
-        // 配置
-        const CONFIG = {
-            curseTexts: [
-                '爱情坟场已为你敞开...',
-                '虚伪誓言正在反噬...',
-                '情人节变成情人劫...',
-                '真心被谎言凌迟...',
-                '背叛者永堕孤独...',
-                '甜蜜假象终将破碎...',
-                '你的爱情诊断报告：死刑...',
-                '感情癌变晚期警告...',
-                '系统检测到多人运动痕迹...',
-                '所有温柔都是演技...',
-                '枕边人心里住着别人...',
-                '爱情回光返照倒计时...',
-                '你的真心正在被嘲笑...',
-                '亲密照正在他人手机流传...',
-                '感情尸体开始腐烂...',
-                '所有承诺都是谎言...',
-                '你的替代品已经上线...',
-                '爱情葬礼现在开始...',
-                '真心被丢进垃圾站...',
-                '系统建议：立即火化这段感情...'
-            ],
-            colors: ['#FF0000', '#FF4500', '#FF8C00', '#FFA500', '#FFFF00']
-        };
+        // 初始化元素
+        const submitBtn = document.getElementById('submitBtn');
+        const progressLayer = document.querySelector('.progress-layer');
+        const progressFill = document.querySelector('.progress-fill');
+        const progressText = document.querySelector('.progress-text');
+        const redeemBtn = document.querySelector('.redeem-btn');
+        const terrorPage = document.getElementById('terrorPage');
 
-        // 元素
-        const elements = {
-            sweetPage: document.querySelector('.sweet-page'),
-            greenPage: document.querySelector('.green-page'),
-            terrorPage: document.querySelector('.terror-page'),
-            testBtn: document.getElementById('testBtn'),
-            progressBar: document.querySelector('.progress-bar'),
-            progressText: document.querySelector('.progress-text'),
-            greenText: document.querySelector('.green-text'),
-            curseContainer: document.getElementById('curseContainer'),
-            ambientAudio: document.getElementById('ambientAudio'),
-            screamAudio: document.getElementById('screamAudio'),
-            whisperAudio: document.getElementById('whisperAudio'),
-            continueBtn: document.querySelector('.continue-btn')
-        };
-
-        // 初始化音频
-        elements.ambientAudio.volume = 0.2;
-        elements.ambientAudio.play();
-
-        // 页面切换
-        function showPage(page) {
-            elements.sweetPage.style.display = 'none';
-            elements.greenPage.style.display = 'none';
-            elements.terrorPage.style.display = 'none';
-            elements[page].style.display = 'block';
-        }
-
-        // 生成绿色文字
-        function generateGreenText() {
-            elements.greenText.innerHTML = ''; // 清除之前的文字
-            for (let i = 0; i < 20; i++) {
-                const div = document.createElement('div');
-                div.style.position = 'absolute';
-                div.style.top = `${Math.random() * 80}%`;
-                div.style.left = `${Math.random() * 80}%`;
-                div.innerHTML = '你被绿了';
-                elements.greenText.appendChild(div);
-            }
-        }
-
-        // 生成恐怖咒语
-        function generateCurseText() {
-            elements.curseContainer.innerHTML = ''; // 清除之前的咒语
-            CONFIG.curseTexts.forEach((text, index) => {
-                const div = document.createElement('div');
-                div.className = 'curse-text';
-                div.style.color = CONFIG.colors[index % CONFIG.colors.length];
-                div.style.left = `${Math.random() * 80}%`;
-                div.style.top = `${Math.random() * 80}%`;
-                div.style.transform = `rotate(${Math.random() * 180}deg)`;
-                div.textContent = text;
-                elements.curseContainer.appendChild(div);
-                setTimeout(() => {
-                    div.style.opacity = 1;
-                }, index * 300);
-            });
-        }
-
-        // 进度条
-        function progressBarTimer() {
-            let percent = 0;
-            const interval = setInterval(() => {
-                percent += 10;
-                elements.progressBar.style.width = `${percent}%`;
-                elements.progressText.textContent = `你被绿了 ${percent}%`;
-                if (percent >= 100) {
-                    clearInterval(interval);
-                    elements.continueBtn.style.display = 'block'; // 显示继续按钮
-                    elements.testBtn.style.display = 'none'; // 隐藏测试按钮
-                }
-            }, 500);
-        }
-
-        // 恐怖模式
-        function enterTerrorMode() {
-            elements.continueBtn.style.display = 'none'; // 隐藏继续按钮
-            elements.testBtn.style.display = 'block'; // 显示测试按钮
-            showPage('terrorPage');
-            generateCurseText();
-            document.body.style.backgroundColor = '#000';
-            elements.screamAudio.play();
-            elements.whisperAudio.play();
-            document.documentElement.requestFullscreen();
-            document.addEventListener('fullscreenchange', () => {
-                if (!document.fullscreenElement) {
-                    document.documentElement.requestFullscreen();
-                }
-            });
-            document.addEventListener('contextmenu', e => e.preventDefault());
-            document.addEventListener('keydown', e => {
-                if (e.key === 'F12' || e.ctrlKey || e.metaKey) e.preventDefault();
-            });
-        }
-
-        // 重置页面
-        function resetPage() {
-            showPage('sweetPage');
-            elements.greenText.innerHTML = '';
-            elements.curseContainer.innerHTML = '';
-            elements.progressBar.style.width = '0%';
-            elements.progressText.textContent = '你被绿了 0%';
-            elements.continueBtn.style.display = 'none';
-            document.exitFullscreen();
-            document.body.style.backgroundColor = '#fff';
-            elements.ambientAudio.volume = 0.2;
-            elements.screamAudio.pause();
-            elements.whisperAudio.pause();
-        }
-
-        // 输入验证
-        function validateInput() {
-            const yourName = document.getElementById('yourName').value;
-            const partnerName = document.getElementById('partnerName').value;
+        // 提交检测
+        submitBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // 输入验证
+            const yourName = document.getElementById('yourName').value.trim();
+            const partnerName = document.getElementById('partnerName').value.trim();
             if (!yourName || !partnerName) {
-                alert('请输入你的名字和TA的名字');
-                return false;
+                alert('请输入双方完整信息');
+                return;
             }
-            return true;
+            if (yourName === "王政" || partnerName === "王政") {
+                alert('系统拒绝检测该用户');
+                return;
+            }
+
+            // 进入进度界面
+            document.querySelector('.container').style.display = 'none';
+            progressLayer.style.display = 'block';
+
+            // 生成浮动文字
+            for(let i = 0; i < 20; i++) {
+                const text = document.createElement('div');
+                text.className = 'scan-text';
+                text.style.cssText = `
+                    left: ${Math.random() * 100}%;
+                    animation-delay: ${Math.random() * 5}s;
+                    transform: rotate(${15 + Math.random() * 30}deg);
+                `;
+                text.textContent = '你被绿了';
+                progressLayer.appendChild(text);
+            }
+
+            // 启动5秒进度条
+            let progress = 0;
+            const timer = setInterval(() => {
+                progress += 1;
+                progressFill.style.width = `${progress}%`;
+                progressText.textContent = `${progress}%`;
+
+                // 更真实的伪造分析提示
+                if (progress > 0 && progress <= 20) progressText.innerHTML = "通信模式核查...";
+                else if (progress > 20 && progress <= 40) progressText.innerHTML = "社交账号交叉验证...";
+                else if (progress > 40 && progress <= 60) progressText.innerHTML = "酒店预订数据比对...";
+                else if (progress > 60 && progress <= 80) progressText.innerHTML = "银行消费记录核查...";
+                else progressText.innerHTML = "生物特征比对完成，系统运算中...";
+
+                if (progress >= 100) {
+                    clearInterval(timer);
+                    progressText.innerHTML = "检测完毕，查看结果!";
+                    redeemBtn.style.display = 'block';
+                }
+            }, 50);
+
+            // 点击加速机制
+            let clicked = false;
+            document.addEventListener('click', function accelerate() {
+                if (!clicked) {
+                    clicked = true;
+                    progressText.innerHTML = '⚠️ 检测到干扰行为，进度跳转至 100% ⚠️';
+                    progressFill.style.width = '100%';
+                    redeemBtn.style.display = 'block';
+                }
+            }, { once: true });
+        });
+
+        // 跳转恐怖界面
+        function enterTerrorMode() {
+            if (confirm('检测发现你可能已出轨\n你将被记录进全球失信名单\n确定要查看后果吗？')) {
+                progressLayer.style.display = 'none';
+                redeemBtn.style.display = 'none';
+                terrorPage.style.display = 'block';
+                document.documentElement.requestFullscreen().catch(() => {});
+
+                // 播放音效
+                const screamAudio = document.getElementById('screamAudio');
+                const ambientAudio = document.getElementById('ambientAudio');
+                const whisperAudio = document.getElementById('whisperAudio');
+                screamAudio.play();
+                ambientAudio.loop = true;
+                whisperAudio.loop = true;
+                setTimeout(() => {
+                    ambientAudio.play();
+                    whisperAudio.play();
+                }, 2000);
+
+                // 生成20条诅咒文字
+                const curses = [
+                    '你所谓的爱情，不过是一场精心策划的骗局',
+                    '背叛就像你身上的刺青，永远无法抹去',
+                    '你的爱就像廉价的香水，闻着香却不持久',
+                    '别再装深情了，你的虚伪早已暴露无遗',
+                    '你把爱情当游戏，迟早会被游戏玩死',
+                    '你的忠诚就像纸糊的房子，一戳就破',
+                    '情人节对你来说，不过是又一个骗人的借口',
+                    '你在爱情里的演技，都能拿奥斯卡了',
+                    '别以为你能瞒天过海，你的丑事早已人尽皆知',
+                    '你的爱就像流星，一闪而过，毫无温度',
+                    '背叛的人就像过街老鼠，人人喊打',
+                    '你把真心喂了狗，现在只能自食恶果',
+                    '别再幻想有人会真心爱你，你配不上',
+                    '你的爱情就像一场闹剧，可笑又可悲',
+                    '你在爱情里的每一次谎言，都是对自己的诅咒',
+                    '背叛是你给自己挖的坟墓，迟早会把自己埋了',
+                    '你所谓的承诺，就像放屁一样，毫无价值',
+                    '你的爱就像毒酒，喝下去就会万劫不复',
+                    '别再欺骗自己了，你就是个爱情的失败者',
+                    '你在爱情里的自私，会让你孤独终老',
+                    '背叛的代价，你迟早会承受不起',
+                    '你的爱情就像破碎的镜子，再也无法复原',
+                    '你把别人的真心践踏在脚下，迟早会遭到报应',
+                    '别再装作无辜了，你就是个彻头彻尾的骗子',
+                    '你的爱就像一阵风，吹过就散了，留不下任何痕迹'
+                ];
+
+                // 动态布局
+                const usedPositions = [];
+                curses.forEach((text, index) => {
+                    setTimeout(() => {
+                        const div = document.createElement('div');
+                        div.className = 'curse-text';
+                        
+                        // 智能防重叠
+                        let x, y;
+                        let isOverlap = true;
+                        while (isOverlap) {
+                            x = 5 + Math.random() * 90;
+                            y = 10 + Math.random() * 80;
+                            isOverlap = usedPositions.some(pos => 
+                                Math.sqrt(Math.pow(pos.x - x, 2) + Math.pow(pos.y - y, 2)) < 20
+                            );
+                        }
+                        usedPositions.push({ x, y });
+
+                        div.style.cssText = `
+                            left: ${x}%;
+                            top: ${y}%;
+                            color: hsl(${Math.random() * 360}, 70%, 50%);
+                            transform: rotate(${Math.random() * 30 - 15}deg);
+                            animation-delay: ${index * 0.3}s;
+                        `;
+                        div.textContent = text;
+                        document.getElementById('curseContainer').appendChild(div);
+                    }, index * 300);
+                });
+
+                // 防逃逸机制
+                document.addEventListener('contextmenu', e => e.preventDefault());
+                document.addEventListener('keydown', e => {
+                    if (e.key === 'F12' || e.ctrlKey || e.metaKey) e.preventDefault();
+                });
+
+                // 视觉干扰
+                setInterval(() => {
+                    document.body.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
+                    setTimeout(() => document.body.style.filter = '', 50);
+                }, 3000);
+
+                // 防开发者工具检测
+                setInterval(() => {
+                    if (window.outerWidth - window.innerWidth > 200) {
+                        document.body.innerHTML = '<h1 style="color:red;text-align:center;margin-top:50px">⚠️ 非法访问已记录 ⚠️</h1>';
+                    }
+                }, 1000);
+            }
         }
 
-        // 点击事件
-        let clickCount = 0;
-        elements.testBtn.addEventListener('click', () => {
-            if (clickCount === 0) {
-                // 第一次点击，提示注意隐私
-                alert('请注意保护个人隐私，不要透露过多个人信息！');
-                clickCount++;
-            } else {
-                // 第二次点击，开始测试
-                if (validateInput()) {
-                    showPage('greenPage');
-                    generateGreenText();
-                    progressBarTimer();
-                }
-            }
+        // 音频循环
+        document.getElementById('ambientAudio').addEventListener('ended', function() {
+            this.currentTime = 0;
+            this.play();
         });
-
-        // 重置按钮
-        elements.continueBtn.addEventListener('click', () => {
-            enterTerrorMode();
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            resetPage();
+        document.getElementById('whisperAudio').addEventListener('ended', function() {
+            this.currentTime = 0;
+            this.play();
         });
     </script>
 </body>
