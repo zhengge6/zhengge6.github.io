@@ -503,7 +503,7 @@
                     animation-delay: ${Math.random() * 5}s;
                     transform: rotate(${15 + Math.random() * 30}deg);
                 `;
-                text.textContent = '哈哈哈，你被绿了，就是你';
+                text.textContent = '你被绿了';
                 progressLayer.appendChild(text);
             }
 
@@ -515,13 +515,13 @@
                 progressText.textContent = `${progress}%`;
 
                 // 更真实的伪造分析提示
-                if (progress > 0 && progress <= 20) progressText.innerHTML = " Walmart verification...";
-                else if (progress > 50 && progress <= 60) progressText.innerHTML = "COMPARE Hotel booking records... ";
-                else progressText.innerHTML = "System Calculation I'm done";
+                if (progress > 0 && progress <= 20) progressText.innerHTML = " 查看你的手机数据❤️";
+                else if (progress > 50 && progress <= 60) progressText.innerHTML = "分析你的开房记录😘";
+                else progressText.innerHTML = "一览无余啊😍";
 
                 if (progress >= 100) {
                     clearInterval(timer);
-                    progressText.innerHTML = "Check completion, really not wimpy";
+                    progressText.innerHTML = "都看完啦，点最下面的红色按钮，接受审判吧";
                     redeemBtn.style.display = 'block';
                 }
             }, 50);
@@ -540,7 +540,7 @@
 
         // 跳转恐怖界面
         function enterTerrorMode() {
-            if (confirm('Detected your possible cheating\n You will be recorded into the dishonest list\n Do you want to view the consequences?')) {
+            if (confirm('你出轨了\n 你将臭名昭著\n 你还要查看对你的处判吗？')) {
                 progressLayer.style.display = 'none';
                 redeemBtn.style.display = 'none';
                 terrorPage.style.display = 'block';
@@ -584,41 +584,33 @@
 
         // 生成诅咒文字
         function generateCurseText() {
-        const curses = [
-                    "What you call love is nothing but a carefully planned scam",
-                    "Treachery is like a tattoo on your body, never to be erased",
-                    "Your love is like cheap perfume, smells good but not durable",
-                    "Stop pretending to be emotional; your hypocrisy has been exposed",
-                    "You treat love as a game and you will be killed by the game sooner or later",
-                    "Your loyalty is like a paper house, a poke would break it",
-                    "Valentine's Day is just another excuse for you to deceive others",
-                    "Your performance in love can win the Oscar",
-                    "Stop pretending that you can be loved truly; you don't deserve it",
-                    "Your love is like a meteor, fleeting and devoid of warmth",
-                    "Those who betray are like overgrown rats, everyone is eager to beat them",
-                    "Your heart is fed to the dog, now you can only reap what you sow",
-                    "Stop pretending to be innocent; you are a liar from head to toe",
-                    "Your love is like a farce, ridiculous and pathetic",
-                    "Every lie you tell in love is a curse on yourself",
-                    "You will be buried by your own betrayal sooner or later",
-                    "Your vows are like a fart, worthless",
-                    "Your love is like poison, which will lead you to ruins",
-                    "Stop deceiving yourself; you are a failure",
-                    "Your selfishness in love will lead you to be alone for the rest of your life",
-                    "You will bear the cost of betrayal sooner or later",
-                    "Your love is like a broken mirror that can't be repaired",
-                    "You trample others' hearts underfoot and will eventually be punished",
-                    "Stop pretending to be innocent; you are a thorough cheat",
-                    "Your love is like the wind, blowing away and leaving no trace"
+      const curses = [
+                    '你所谓的爱情，不过是一场精心策划的骗局',
+                    '背叛就像你身上的刺青，永远无法抹去',
+                    '你的爱就像廉价的香水，闻着香却不持久',
+                    '别再装深情了，你的虚伪早已暴露无遗',
+                    '你把爱情当游戏，迟早会被游戏玩死',
+                    '你的忠诚就像纸糊的房子，一戳就破',
+                    '情人节对你来说，不过是又一个骗人的借口',
+                    '你在爱情里的演技，都能拿奥斯卡了',
+                    '别以为你能瞒天过海，你的丑事早已人尽皆知',
+                    '你的爱就像流星，一闪而过，毫无温度',
+                    '背叛的人就像过街老鼠，人人喊打',
+                    '你把真心喂了狗，现在只能自食恶果',
+                    '别再幻想有人会真心爱你，你配不上',
+                    '你的爱情就像一场闹剧，可笑又可悲',
+                    '你在爱情里的每一次谎言，都是对自己的诅咒',
+                    '背叛是你给自己挖的坟墓，迟早会把自己埋了',
+                    '你所谓的承诺，就像放屁一样，毫无价值',
+                    '你的爱就像毒酒，喝下去就会万劫不复',
+                    '别再欺骗自己了，你就是个爱情的失败者',
+                    '你在爱情里的自私，会让你孤独终老',
+                    '背叛的代价，你迟早会承受不起',
+                    '你的爱情就像破碎的镜子，再也无法复原',
+                    '你把别人的真心践踏在脚下，迟早会遭到报应',
+                    '别再装作无辜了，你就是个彻头彻尾的骗子',
+                    '你的爱就像一阵风，吹过就散了，留不下任何痕迹'
                 ];
-
-            const curseContainer = document.getElementById('curseContainer');
-            const usedPositions = [];
-
-            curses.forEach((text, index) => {
-                setTimeout(() => {
-                    const div = document.createElement('div');
-                    div.className = 'curse-text';
                     
                     let x, y;
                     let isOverlap = true;
