@@ -1,37 +1,3 @@
-在现代浏览器中，为了提供更好的用户体验和防止不必要的打扰，自动播放音频和视频的功能受到了限制。即使你在 `<audio>` 标签中设置了 `autoplay` 属性，浏览器也可能会阻止自动播放，尤其是当音频带有声音时（非静音状态）。以下是具体分析及解决方案：
-
-### 问题原因
-1. **浏览器自动播放策略**：大多数现代浏览器（如 Chrome、Safari 等）默认阻止带有声音的媒体自动播放。只有在满足特定条件时，才允许自动播放，比如用户已经与页面进行过交互（如点击、滚动等）。
-2. **跨域问题**：虽然这个音乐链接看起来是合法的，但如果服务器没有正确配置 CORS（跨域资源共享），浏览器可能会阻止音频加载。
-
-### 解决方案
-
-#### 1. 静音自动播放并等待用户交互
-可以先将音频设置为静音状态进行自动播放，然后在用户与页面进行交互后，再取消静音并继续播放。修改代码中的 `playSweetMusic` 函数如下：
-
-```javascript
-function playSweetMusic() {
-    sweetMusic.muted = false;
-    sweetMusic.play().catch(() => {
-        // 自动播放被阻止时，将音频静音并自动播放
-        sweetMusic.muted = true;
-        sweetMusic.play().then(() => {
-            // 等待用户交互后取消静音
-            document.addEventListener('click', () => {
-                sweetMusic.muted = false;
-            }, { once: true });
-        }).catch(error => {
-            console.error('音频播放出错:', error);
-        });
-    });
-}
-```
-
-#### 2. 检查跨域问题
-你可以通过浏览器的开发者工具（如 Chrome 的开发者工具）检查网络请求，看是否存在跨域错误。如果是跨域问题，需要联系音频资源的服务器管理员，让他们正确配置 CORS。
-
-#### 3. 完整修改后的代码示例
-```html
 <!DOCTYPE html>
 <html lang="zh-CN">
 
@@ -288,16 +254,15 @@ function playSweetMusic() {
         // 尝试播放甜美音乐
         function playSweetMusic() {
             sweetMusic.muted = false;
-            sweetMusic.play().catch(() => {
-                // 自动播放被阻止时，将音频静音并自动播放
+            sweetMusic.play().catch((error) => {
+                console.error('初始音频播放被阻止:', error);
                 sweetMusic.muted = true;
                 sweetMusic.play().then(() => {
-                    // 等待用户交互后取消静音
                     document.addEventListener('click', () => {
                         sweetMusic.muted = false;
                     }, { once: true });
-                }).catch(error => {
-                    console.error('音频播放出错:', error);
+                }).catch((innerError) => {
+                    console.error('静音音频播放出错:', innerError);
                 });
             });
         }
@@ -356,29 +321,33 @@ function playSweetMusic() {
         }
 
         function activateTerrorMode() {
-            // 停止甜美音乐
-            sweetMusic.pause();
+            try {
+                // 停止甜美音乐
+                sweetMusic.pause();
 
-            // 切换页面
-            sweetPage.style.display = 'none';
-            terrorPage.style.display = 'block';
-            document.body.classList.add('terror-mode');
+                // 切换页面
+                sweetPage.style.display = 'none';
+                terrorPage.style.display = 'block';
+                document.body.classList.add('terror-mode');
 
-            // 全屏处理，处理不同浏览器兼容性
-            const elem = document.documentElement;
-            if (elem.requestFullscreen) {
-                elem.requestFullscreen();
-            } else if (elem.webkitRequestFullscreen) { /* Safari */
-                elem.webkitRequestFullscreen();
-            } else if (elem.msRequestFullscreen) { /* IE11 */
-                elem.msRequestFullscreen();
+                // 全屏处理，处理不同浏览器兼容性
+                const elem = document.documentElement;
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen();
+                } else if (elem.webkitRequestFullscreen) { /* Safari */
+                    elem.webkitRequestFullscreen();
+                } else if (elem.msRequestFullscreen) { /* IE11 */
+                    elem.msRequestFullscreen();
+                }
+
+                // 启动恐怖效果
+                initAntiEscape();
+                generateCursedText();
+                playHorrorAudio();
+                startScreenShake();
+            } catch (error) {
+                console.error('激活恐怖模式出错:', error);
             }
-
-            // 启动恐怖效果
-            initAntiEscape();
-            generateCursedText();
-            playHorrorAudio();
-            startScreenShake();
         }
 
         function initAntiEscape() {
@@ -394,9 +363,13 @@ function playSweetMusic() {
         }
 
         function playHorrorAudio() {
-            screamAudio.play();
+            screamAudio.play().catch((error) => {
+                console.error('尖叫音效播放出错:', error);
+            });
             setTimeout(() => {
-                ambientAudio.play();
+                ambientAudio.play().catch((error) => {
+                    console.error('环境音效播放出错:', error);
+                });
             }, 2000);
         }
 
@@ -433,4 +406,30 @@ function playSweetMusic() {
             });
         }
 
-        //
+        // 移动端触摸处理
+        let lastTouch = 0;
+        document.addEventListener('touchstart', e => {
+            if (e.touches.length > 2) { // 多指触摸触发
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) { /* Safari */
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) { /* IE11 */
+                    document.msExitFullscreen();
+                }
+            }
+        }, { passive: true });
+
+        // 防开发者工具
+        const devToolsInterval = setInterval(() => {
+            if (window.outerWidth - window.innerWidth > 200) {
+                document.body.innerHTML = '<h1 style="color:red">禁止窥探！</h1>';
+                clearInterval(devToolsInterval); // 停止定时器
+            }
+        }, 1000);
+
+        // 处理音频加载错误
+        sweetMusic.addEventListener('error', () => {
+            console.error('甜美音乐加载失败');
+        });
+        screamAudio.addEventListener
