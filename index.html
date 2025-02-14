@@ -6,7 +6,6 @@
     <title>点进来就对了嘛</title>
     <style>
         /* 保持原有所有样式不变 */
-
         /* 新增背景容器样式 */
         .bg-container {
             position: fixed;
@@ -155,7 +154,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('<url id="cunks3rua3d7p9fj4l40" type="url" status="failed" title="" wc="0">https://api.mmp.cc/api/pcwallpaper?category=cartoon&type=jpg</url> ') no-repeat center/cover;
+            background: url('<url id="cunlgr2hra02gmj8m0l0" type="url" status="failed" title="" wc="0">https://api.mmp.cc/api/pcwallpaper?category=cartoon&type=jpg</url>   ') no-repeat center/cover;
             filter: brightness(0.4) contrast(1.4);
             z-index: -1;
         }
@@ -217,6 +216,50 @@
             transform: scale(0.95);
         }
 
+        /* 新增弹窗样式 */
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 500px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            display: none;
+            z-index: 1002;
+        }
+
+        .popup h2 {
+            color: #ff1493;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .popup p {
+            font-size: 16px;
+            color: #333;
+            text-align: center;
+        }
+
+        .popup button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #ff1493;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .popup button:hover {
+            background-color: #ff69b4;
+        }
+
         /* 新增音乐控制样式 */
         .music-control {
             position: fixed;
@@ -234,69 +277,6 @@
             z-index: 1001;
         }
 
-        /* 新增注意事项弹窗样式 */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 30px;
-            border-radius: 25px;
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-            width: 80%;
-            max-width: 600px;
-            z-index: 1002;
-            text-align: center;
-            font-family: 'Arial', 'Microsoft YaHei', sans-serif;
-        }
-
-        .modal .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            cursor: pointer;
-            font-size: 24px;
-            color: #ff1493;
-        }
-
-        .modal-content {
-            margin: 20px 0;
-            font-size: 16px;
-            line-height: 1.8;
-            color: #333;
-        }
-
-        .modal-content h2 {
-            margin-bottom: 15px;
-            color: #ff1493;
-            font-size: 28px;
-        }
-
-        .modal-content ul {
-            list-style-type: disc;
-            padding-left: 25px;
-            font-size: 15px;
-        }
-
-        .know-btn {
-            display: inline-block;
-            padding: 10px 25px;
-            background: linear-gradient(90deg, #ff1493, #45a049);
-            color: white;
-            border: none;
-            border-radius: 25px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .know-btn:hover {
-            background: linear-gradient(90deg, #45a049, #ff1493);
-        }
-
         /* 移动端适配 */
         @media (max-width: 768px) {
             .container { padding: 15px; }
@@ -308,33 +288,21 @@
             .redeem-btn { font-size: 16px; padding: 12px 30px; }
             .music-control { width: 30px; height: 30px; right: 10px; bottom: 10px; }
             .loading { width: 20px; height: 20px; }
-            .modal { padding: 20px; border-radius: 15px; width: 90%; }
-            .modal-content h2 { font-size: 22px; }
-            .know-btn { padding: 8px 20px; font-size: 16px; }
         }
     </style>
 </head>
 <body>
-    <!-- 新增注意事项弹窗 -->
-    <div id="noticeModal" class="modal">
-        <span class="close-btn" onclick="closeModal()">×</span>
-        <div class="modal-content">
-            <h2>🎉 测试页面请注意！🎉</h2>
-            <p>您正在访问的是一个测试页面，虽然看起来很炫酷，但请不要当真哦！</p>
-            <p>以下是需要您注意的几点事项：</p>
-            <ul>
-                <li>这是一条测试提醒，请勿过于认真。</li>
-                <li>页面中的内容纯属虚构，如有雷同，纯属巧合。</li>
-                <li>请谨慎对待页面中的信息，切勿随意相信。</li>
-            </ul>
-        </div>
-        <button class="know-btn" onclick="closeModal()">我已知晓</button>
-    </div>
-
     <!-- 新增背景容器 -->
     <div class="bg-container">
         <div class="loading"></div>
         <img class="bg-image" id="bgImage" alt="政爱你">
+    </div>
+
+    <!-- 注意事项弹窗 -->
+    <div class="popup" id="popup">
+        <h2>注意事项</h2>
+        <p>想听歌的网易云需要手动点一下播放！本站需要按钮来推动！</p>
+        <button onclick="closePopup()">朕知道了</button>
     </div>
 
     <!-- 主界面 -->
@@ -344,7 +312,7 @@
         <input type="text" class="love-input" placeholder="伴侣姓名" id="partnerName">
         <button id="submitBtn">俺不是孬种🙌</button>
         <audio id="bgMusic" loop>
-            <source src="<url id="cunks3rua3d7p9fj4l1g" type="url" status="failed" title="" wc="0">https://assets.mixkit.co/music/preview/mixkit-candy-325.mp3</url> " type="audio/mpeg">
+            <source src="<url id="cunlgr2hra02gmj8m0lg" type="url" status="failed" title="" wc="0">https://assets.mixkit.co/music/preview/mixkit-candy-325.mp3</url>   " type="audio/mpeg">
         </audio>
     </div>
     <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=65540&auto=1&height=66"></iframe>
@@ -364,7 +332,7 @@
                 民政局认证系统❤️💕 | 数据同步至云端监控👌
             </p>
             <div style="text-align: center;">
-                <img src="<url id="cunks3rua3d7p9fj4l20" type="url" status="failed" title="" wc="0">https://via.placeholder.com/60x60?text=Government+Certified</url> " 
+                <img src="<url id="cunlgr2hra02gmj8m0m0" type="url" status="failed" title="" wc="0">https://via.placeholder.com/60x60?text=Government+Certified</url>   " 
                      style="display: inline-block; margin: 20px 0; border-radius: 50%; background: #000; border: 2px solid white;">
             </div>
         </div>
@@ -375,40 +343,31 @@
     <div id="terrorPage" style="display: none;">
         <div class="terror-bg"></div>
         <div id="curseContainer"></div>
-        <audio id="screamAudio" src="<url id="cunks3rua3d7p9fj4l2g" type="url" status="failed" title="" wc="0">https://assets.mixkit.co/active_storage/sfx/257/257-preview.mp3</url> "></audio>
-        <audio id="ambientAudio" src="<url id="cunks3rua3d7p9fj4l30" type="url" status="failed" title="" wc="0">https://assets.mixkit.co/active_storage/sfx/281/281-preview.mp3</url> " loop></audio>
-        <audio id="whisperAudio" src="<url id="cunks3rua3d7p9fj4l3g" type="url" status="failed" title="" wc="0">https://assets.mixkit.co/active_storage/sfx/295/295-preview.mp3</url> " loop></audio>
+        <audio id="screamAudio" src="<url id="cunlgr2hra02gmj8m0mg" type="url" status="failed" title="" wc="0">https://assets.mixkit.co/active_storage/sfx/257/257-preview.mp3</url>   "></audio>
+        <audio id="ambientAudio" src="<url id="cunlgr2hra02gmj8m0n0" type="url" status="failed" title="" wc="0">https://assets.mixkit.co/active_storage/sfx/281/281-preview.mp3</url>   " loop></audio>
+        <audio id="whisperAudio" src="<url id="cunlgr2hra02gmj8m0ng" type="url" status="failed" title="" wc="0">https://assets.mixkit.co/active_storage/sfx/295/295-preview.mp3</url>   " loop></audio>
     </div>
 
     <script>
-        // 页面加载时显示弹窗
-        window.onload = function() {
-            const modal = document.getElementById('noticeModal');
-            modal.style.display = 'block';
-        };
-
-        // 关闭弹窗
-        function closeModal() {
-            const modal = document.getElementById('noticeModal');
-            modal.style.display = 'none';
-        }
-
         // 随机背景API配置
         const BACKGROUND_APIS = [
             {
-                url: '<url id="cunks3rua3d7p9fj4l40" type="url" status="failed" title="" wc="0">https://api.mmp.cc/api/pcwallpaper?category=cartoon&type=jpg</url> ',
+                url: 'https://api.mmp.cc/api/pcwallpaper?category=cartoon&type=jpg',
                 credit: 'MMP API'
             }
         ];
 
-        // 加载随机背景
+        // 加载随机背景并显示弹窗
         async function loadRandomBackground() {
             const bgContainer = document.querySelector('.bg-container');
             const loader = bgContainer.querySelector('.loading');
             const bgImage = document.getElementById('bgImage');
 
             try {
+                // 随机选择API
                 const api = BACKGROUND_APIS[Math.floor(Math.random() * BACKGROUND_APIS.length)];
+
+                // 创建图片预加载
                 const img = new Image();
                 img.src = api.url;
 
@@ -418,10 +377,12 @@
                     setTimeout(() => reject(new Error('加载超时')), 5000);
                 });
 
+                // 替换背景
                 bgImage.src = img.src;
                 bgImage.style.display = 'block';
                 loader.style.display = 'none';
 
+                // 添加版权信息（如果存在）
                 if(api.credit) {
                     const credit = document.createElement('div');
                     credit.style.position = 'fixed';
@@ -432,15 +393,28 @@
                     credit.textContent = `ZHENG: ${api.credit}`;
                     document.body.appendChild(credit);
                 }
+
+                // 显示弹窗
+                document.getElementById('popup').style.display = 'block';
+
             } catch (error) {
                 console.error('背景加载失败:', error);
             }
         }
 
+        // 关闭弹窗
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+
         // 初始化加载背景
         document.addEventListener('DOMContentLoaded', () => {
             loadRandomBackground();
+
+            // 每30分钟更换背景
             setInterval(loadRandomBackground, 30 * 60 * 1000);
+            
+            // 点击容器刷新背景
             document.querySelector('.bg-container').addEventListener('click', () => {
                 document.querySelector('.loading').style.display = 'block';
                 loadRandomBackground();
@@ -452,12 +426,14 @@
         const musicBtn = document.getElementById('musicBtn');
         let isMusicPlaying = false;
 
+        // 音乐控制逻辑
         musicBtn.addEventListener('click', () => {
             if(isMusicPlaying) {
                 bgMusic.pause();
                 musicBtn.textContent = ' minded towards pa-, itce Tasew thank you, - wei chang, Li W.';
             } else {
                 bgMusic.play().catch(() => {
+                    // 自动播放被阻止时，显示提示
                     musicBtn.textContent = '▶️';
                 });
                 musicBtn.textContent = '⏸️';
@@ -465,6 +441,7 @@
             isMusicPlaying = !isMusicPlaying;
         });
 
+        // 预加载所有音频
         function preloadAudio() {
             const audioElements = [bgMusic];
             audioElements.forEach(audio => {
@@ -474,16 +451,19 @@
                 });
             });
 
+            // 尝试自动播放背景音乐
             bgMusic.play().catch(() => {
                 musicBtn.style.display = 'block';
             });
         }
 
+        // 初始化音乐系统
         document.addEventListener('DOMContentLoaded', () => {
             preloadAudio();
-            bgMusic.volume = 0.5;
+            bgMusic.volume = 0.5; // 调高背景音乐音量
         });
 
+        // 初始化元素
         const submitBtn = document.getElementById('submitBtn');
         const progressLayer = document.querySelector('.progress-layer');
         const progressFill = document.querySelector('.progress-fill');
@@ -494,8 +474,11 @@
         const ambientAudio = document.getElementById('ambientAudio');
         const whisperAudio = document.getElementById('whisperAudio');
 
+        // 提交检测
         submitBtn.addEventListener('click', function(e) {
             e.preventDefault();
+            
+            // 输入验证
             const yourName = document.getElementById('yourName').value.trim();
             const partnerName = document.getElementById('partnerName').value.trim();
             if (!yourName || !partnerName) {
@@ -507,9 +490,11 @@
                 return;
             }
 
+            // 进入进度界面
             document.querySelector('.container').style.display = 'none';
             progressLayer.style.display = 'block';
 
+            // 生成浮动文字
             for(let i = 0; i < 20; i++) {
                 const text = document.createElement('div');
                 text.className = 'scan-text';
@@ -522,95 +507,110 @@
                 progressLayer.appendChild(text);
             }
 
+            // 启动5秒进度条
             let progress = 0;
             const timer = setInterval(() => {
                 progress += 1;
                 progressFill.style.width = `${progress}%`;
                 progressText.textContent = `${progress}%`;
 
-                if (progress > 0 && progress <= 20) progressText.innerHTML = "🤣境外通信模式核查...";
-                else if (progress > 20 && progress <= 40) progressText.innerHTML = "😂社交账号验证...";
-                else if (progress > 40 && progress <= 60) progressText.innerHTML = "😒酒店预订数据比对...";
-                else if (progress > 60 && progress <= 80) progressText.innerHTML = "💕消费记录核查...";
-                else progressText.innerHTML = "💖我已经比对完成，系统运算中...";
+                // 更真实的伪造分析提示
+                if (progress > 0 && progress <= 20) progressText.innerHTML = " Walmart verification...";
+                else if (progress > 50 && progress <= 60) progressText.innerHTML = "COMPARE Hotel booking records... ";
+                else progressText.innerHTML = "System Calculation I'm done";
 
                 if (progress >= 100) {
                     clearInterval(timer);
-                    progressText.innerHTML = "检测完毕，真的不孬";
+                    progressText.innerHTML = "Check completion, really not wimpy";
                     redeemBtn.style.display = 'block';
                 }
             }, 50);
 
+            // 点击加速机制
             let clicked = false;
             document.addEventListener('click', function accelerate() {
                 if (!clicked) {
                     clicked = true;
-                    progressText.innerHTML = '⚠️ 检测到干扰行为，进度跳转至 100% ⚠️';
+                    progressText.innerHTML = '⚠️ Detected interference behavior, progress jumps to 100% ⚠️';
                     progressFill.style.width = '100%';
                     redeemBtn.style.display = 'block';
                 }
             }, { once: true });
         });
 
+        // 跳转恐怖界面
         function enterTerrorMode() {
-            if (confirm('检测发现你可能已出轨\n你将被记录进失信名单\n确定要查看后果吗？')) {
+            if (confirm('Detected your possible cheating\n You will be recorded into the dishonest list\n Do you want to view the consequences?')) {
                 progressLayer.style.display = 'none';
                 redeemBtn.style.display = 'none';
                 terrorPage.style.display = 'block';
                 document.documentElement.requestFullscreen().catch(() => {});
 
+                // 播放恐怖音效
                 playHorrorAudio();
+
+                // 生成诅咒文字
                 generateCurseText();
+
+                // 防逃逸机制
                 preventEscape();
+
+                // 视觉干扰
                 visualInterference();
+
+                // 防开发者工具检测
                 detectDeveloperTools();
             }
         }
 
+        // 播放恐怖音效
         function playHorrorAudio() {
             try {
                 screamAudio.currentTime = 0;
                 screamAudio.play();
+                
                 ambientAudio.currentTime = 0;
                 ambientAudio.loop = true;
                 ambientAudio.play();
+                
                 whisperAudio.currentTime = 0;
                 whisperAudio.volume = 0.8;
                 whisperAudio.loop = true;
                 whisperAudio.play();
             } catch(e) {
-                console.error('音效播放失败:', e);
+                console.error('Sound effect playback failed:', e);
             }
         }
 
+        // 生成诅咒文字
         function generateCurseText() {
-            const curses = [
-                '你所谓的爱情，不过是一场精心策划的骗局',
-                '背叛就像你身上的刺青，永远无法抹去',
-                '你的爱就像廉价的香水，闻着香却不持久',
-                '别再装深情了，你的虚伪早已暴露无遗',
-                '你把爱情当游戏，迟早会被游戏玩死',
-                '你的忠诚就像纸糊的房子，一戳就破',
-                '情人节对你来说，不过是又一个骗人的借口',
-                '你在爱情里的演技，都能拿奥斯卡了',
-                '别以为你能瞒天过海，你的丑事早已人尽皆知',
-                '你的爱就像流星，一闪而过，毫无温度',
-                '背叛的人就像过街老鼠，人人喊打',
-                '你把真心喂了狗，现在只能自食恶果',
-                '别再幻想有人会真心爱你，你配不上',
-                '你的爱情就像一场闹剧，可笑又可悲',
-                '你在爱情里的每一次谎言，都是对自己的诅咒',
-                '背叛是你给自己挖的坟墓，迟早会把自己埋了',
-                '你所谓的承诺，就像放屁一样，毫无价值',
-                '你的爱就像毒酒，喝下去就会万劫不复',
-                '别再欺骗自己了，你就是个爱情的失败者',
-                '你在爱情里的自私，会让你孤独终老',
-                '背叛的代价，你迟早会承受不起',
-                '你的爱情就像破碎的镜子，再也无法复原',
-                '你把别人的真心践踏在脚下，迟早会遭到报应',
-                '别再装作无辜了，你就是个彻头彻尾的骗子',
-                '你的爱就像一阵风，吹过就散了，留不下任何痕迹'
-            ];
+        const curses = [
+                    "What you call love is nothing but a carefully planned scam",
+                    "Treachery is like a tattoo on your body, never to be erased",
+                    "Your love is like cheap perfume, smells good but not durable",
+                    "Stop pretending to be emotional; your hypocrisy has been exposed",
+                    "You treat love as a game and you will be killed by the game sooner or later",
+                    "Your loyalty is like a paper house, a poke would break it",
+                    "Valentine's Day is just another excuse for you to deceive others",
+                    "Your performance in love can win the Oscar",
+                    "Stop pretending that you can be loved truly; you don't deserve it",
+                    "Your love is like a meteor, fleeting and devoid of warmth",
+                    "Those who betray are like overgrown rats, everyone is eager to beat them",
+                    "Your heart is fed to the dog, now you can only reap what you sow",
+                    "Stop pretending to be innocent; you are a liar from head to toe",
+                    "Your love is like a farce, ridiculous and pathetic",
+                    "Every lie you tell in love is a curse on yourself",
+                    "You will be buried by your own betrayal sooner or later",
+                    "Your vows are like a fart, worthless",
+                    "Your love is like poison, which will lead you to ruins",
+                    "Stop deceiving yourself; you are a failure",
+                    "Your selfishness in love will lead you to be alone for the rest of your life",
+                    "You will bear the cost of betrayal sooner or later",
+                    "Your love is like a broken mirror that can't be repaired",
+                    "You trample others' hearts underfoot and will eventually be punished",
+                    "Stop pretending to be innocent; you are a thorough cheat",
+                    "Your love is like the wind, blowing away and leaving no trace"
+                ];
 
             const curseContainer = document.getElementById('curseContainer');
             const usedPositions = [];
@@ -644,6 +644,7 @@
             });
         }
 
+        // 防逃逸机制
         function preventEscape() {
             document.addEventListener('contextmenu', e => e.preventDefault());
             document.addEventListener('keydown', e => {
@@ -651,6 +652,7 @@
             });
         }
 
+        // 视觉干扰
         function visualInterference() {
             setInterval(() => {
                 document.body.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
@@ -658,14 +660,16 @@
             }, 3000);
         }
 
+        // 防开发者工具检测
         function detectDeveloperTools() {
             setInterval(() => {
                 if (window.outerWidth - window.innerWidth > 200) {
-                    document.body.innerHTML = '<h1 style="color:red;text-align:center;margin-top:50px">⚠️ 非法访问已记录 ⚠️</h1>';
+                    document.body.innerHTML = '<h1 style="color:red;text-align:center;margin-top:50px">⚠️ illegally accessed ⚠️</h1>';
                 }
             }, 1000);
         }
 
+        // 音频循环
         ambientAudio.addEventListener('ended', () => {
             ambientAudio.currentTime = 0;
             ambientAudio.play();
