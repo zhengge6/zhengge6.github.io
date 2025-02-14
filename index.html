@@ -332,18 +332,10 @@
                 民政局认证系统❤️💕 | 数据同步至云端监控👌
             </p>
         </div>
-        <button class="redeem-btn" onclick="enterTerrorMode()">查看结果</button>
+        <button class="redeem-btn" onclick="enterTerrorMode()">点我查看结果</button>
     </div>
 
     <!-- 恐怖界面 -->
-    <div id="terrorPage" style="display: none;">
-        <div class="terror-bg"></div>
-        <div id="curseContainer"></div>
-        <audio id="screamAudio" src="<url id="cunlgr2hra02gmj8m0mg" type="url" status="failed" title="" wc="0">https://assets.mixkit.co/active_storage/sfx/257/257-preview.mp3</url>   "></audio>
-        <audio id="ambientAudio" src="<url id="cunlgr2hra02gmj8m0n0" type="url" status="failed" title="" wc="0">https://assets.mixkit.co/active_storage/sfx/281/281-preview.mp3</url>   " loop></audio>
-        <audio id="whisperAudio" src="<url id="cunlgr2hra02gmj8m0ng" type="url" status="failed" title="" wc="0">https://assets.mixkit.co/active_storage/sfx/295/295-preview.mp3</url>   " loop></audio>
-    </div>
-
     <script>
         // 随机背景API配置
         const BACKGROUND_APIS = [
@@ -415,48 +407,6 @@
                 document.querySelector('.loading').style.display = 'block';
                 loadRandomBackground();
             });
-        });
-
-        // 音乐控制系统
-        const bgMusic = document.getElementById('bgMusic');
-        const musicBtn = document.getElementById('musicBtn');
-        let isMusicPlaying = false;
-
-        // 音乐控制逻辑
-        musicBtn.addEventListener('click', () => {
-            if(isMusicPlaying) {
-                bgMusic.pause();
-                musicBtn.textContent = ' minded towards pa-, itce Tasew thank you, - wei chang, Li W.';
-            } else {
-                bgMusic.play().catch(() => {
-                    // 自动播放被阻止时，显示提示
-                    musicBtn.textContent = '▶️';
-                });
-                musicBtn.textContent = '⏸️';
-            }
-            isMusicPlaying = !isMusicPlaying;
-        });
-
-        // 预加载所有音频
-        function preloadAudio() {
-            const audioElements = [bgMusic];
-            audioElements.forEach(audio => {
-                audio.preload = 'auto';
-                audio.addEventListener('error', () => {
-                    console.error(`音频加载失败: ${audio.querySelector('source').src}`);
-                });
-            });
-
-            // 尝试自动播放背景音乐
-            bgMusic.play().catch(() => {
-                musicBtn.style.display = 'block';
-            });
-        }
-
-        // 初始化音乐系统
-        document.addEventListener('DOMContentLoaded', () => {
-            preloadAudio();
-            bgMusic.volume = 0.5; // 调高背景音乐音量
         });
 
         // 初始化元素
