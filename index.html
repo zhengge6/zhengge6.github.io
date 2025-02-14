@@ -1,435 +1,219 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh - CN">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>甜蜜告白信使</title>
+    <meta charset="UTF - 8">
+    <meta name="viewport" content="width=device - width, initial - scale = 1.0">
+    <title>情人节测试</title>
     <style>
-        /* 通用样式 */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
         body {
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-            min-height: 100vh;
-            font-family: 'Comic Sans MS', cursive;
-            overflow-x: hidden;
-            transition: background 0.5s ease;
+            font - family: Arial, sans - serif;
+            text - align: center;
+            background - color: #ffe4e1;
+            display: flex;
+            flex - direction: column;
+            justify - content: center;
+            align - items: center;
+            min - height: 100vh;
+            margin: 0;
         }
 
-        /* 甜蜜页面 */
-        .container {
-            width: 95%;
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(255, 192, 203, 0.4);
-            transition: all 0.5s ease;
-        }
-
-        .title {
-            text-align: center;
-            color: #ff1493;
-            margin: 10px 0;
-            animation: titleFadeIn 1s ease;
-        }
-
-        @keyframes titleFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .love-input {
-            display: block;
-            width: 90%;
-            margin: 15px auto;
-            padding: 12px;
-            border: 2px solid #ff69b4;
-            border-radius: 25px;
-            font-size: 16px;
-            transition: border-color 0.3s ease;
-        }
-
-        .love-input:focus {
-            border-color: #ff1493;
-            outline: none;
-        }
-
-        /* 爱心按钮 */
-        #submitBtn {
+        #test - page {
+            padding: 20px;
             position: relative;
-            background: #ff1493;
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 25px;
-            font-size: 20px;
-            cursor: pointer;
-            transition: 0.3s;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(255, 20, 147, 0.3);
         }
 
-        /* 按钮动效 */
-        #submitBtn:hover::before,
-        #submitBtn:active::before {
-            content: "❤️";
+      .heart {
+            width: 30px;
+            height: 30px;
             position: absolute;
-            animation: heartFlutter 1.2s linear;
+            background - color: red;
+            transform: rotate(45deg);
+            animation: fall 3s linear infinite;
         }
 
-        @keyframes heartFlutter {
-            0% {
+      .heart:before,
+      .heart:after {
+            content: "";
+            width: 30px;
+            height: 30px;
+            background - color: red;
+            border - radius: 50%;
+            position: absolute;
+        }
+
+      .heart:before {
+            top: -15px;
+        }
+
+      .heart:after {
+            left: 15px;
+        }
+
+        @keyframes fall {
+            from {
+                top: -50px;
                 opacity: 1;
-                transform: translateY(0) scale(1);
             }
-            100% {
+
+            to {
+                top: 100vh;
                 opacity: 0;
-                transform: translateY(-100px) scale(2.5);
             }
         }
 
-        /* 移动端适配 */
-        @media (max-width: 768px) {
-            .container {
-                margin: 10px auto;
-                padding: 10px;
-            }
-
-            .love-input {
-                width: 100%;
-                font-size: 14px;
-                padding: 10px;
-            }
-
-            #submitBtn {
-                padding: 12px 30px;
-                font-size: 18px;
-            }
-        }
-
-        /* 恐怖页面样式 */
-        .terror-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://i.imgur.com/YKdXf3k.jpg') no-repeat center/cover;
-            filter: brightness(0.5) contrast(1.3);
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-
-        .blood-filter {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 0, 0, 0.15);
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-
-        /* 诅咒文字 */
-        .curse-text {
-            position: absolute;
-            font-size: 2.5em;
-            color: #ff0000;
-            text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
-            animation: curseFloat 3s infinite;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-
-        @keyframes curseFloat {
+        @keyframes vibrate {
             0%,
             100% {
-                transform: translateY(0) rotate(-5deg);
+                transform: translateX(0);
             }
-            50% {
-                transform: translateY(-20px) rotate(5deg);
+
+            10%,
+            30%,
+            50%,
+            70%,
+            90% {
+                transform: translateX(-10px);
+            }
+
+            20%,
+            40%,
+            60%,
+            80% {
+                transform: translateX(10px);
             }
         }
 
-        .button-container {
-            text-align: center;
-            margin: 20px 0;
+        #scary - page {
+            background - image: url('https://www.wallpaperup.com/uploads/wallpapers/2015/03/13/642345/7c9869768000c958027a70c9a8c56725.jpg');
+            background - size: cover;
+            background - repeat: no - repeat;
+            color: white;
+            padding: 20px;
         }
 
-        /* 恐怖模式下的样式 */
-        body.terror-mode {
-            background: #000;
+        input[type="text"],
+        button {
+            padding: 10px 20px;
+            border: none;
+            border - radius: 5px;
+            margin: 10px;
+            font - size: 16px;
         }
 
-        body.terror-mode .container {
-            opacity: 0;
-            pointer-events: none;
+        button {
+            background - color: #FF69B4;
+            color: white;
+            cursor: pointer;
+            transition: background - color 0.3s ease;
         }
 
-        body.terror-mode .terror-bg,
-        body.terror-mode .blood-filter {
-            opacity: 1;
-        }
-
-        body.terror-mode .curse-text {
-            opacity: 1;
+        button:hover {
+            background - color: #FF1493;
         }
     </style>
 </head>
 
 <body>
-    <!-- 甜蜜页面 -->
-    <div id="sweetPage" class="container">
-        <h1 class="title">❤️ 真爱告白生成器 ❤️</h1>
-        <input type="text" class="love-input" placeholder="你的名字" id="yourName">
-        <input type="text" class="love-input" placeholder="TA的名字" id="partnerName">
-        <div class="button-container">
-            <button id="submitBtn">生成浪漫情书</button>
-        </div>
+    <div id="test - page">
+        <h1>情人节忠诚度测试</h1>
+        <div class="heart - container"></div>
+        <label for="name1">你的姓名：</label>
+        <input type="text" id="name1" required>
+        <br>
+        <label for="name2">Ta的姓名：</label>
+        <input type="text" id="name2" required>
+        <br>
+        <button onclick="checkNames()">开始测试</button>
+        <audio id="sweetSound" src="https://www.soundjay.com/button/sounds/kiss.mp3" autoplay loop></audio>
     </div>
 
-    <!-- 恐怖页面 -->
-    <div id="terrorPage" style="display: none;">
-        <div class="terror-bg"></div>
-        <div id="curseContainer"></div>
-        <div class="blood-filter"></div>
+    <div id="scary - page" style="display: none;">
+        <h1>恐怖页面</h1>
+        <audio id="scarySound" src="https://www.soundjay.com/button/sounds/scream1a.mp3"></audio>
     </div>
-
-    <!-- 音频元素 -->
-    <audio id="sweetMusic" src="https://ws.stream.qqmusic.qq.com/C400000rA4JG1njrS4.m4a?guid=169745647&vkey=A4E54A6AAA1F706E30F02F485C25B2580049F8B992E539146FB1F01EE4EFBA960D497441E4C261DD96AAA3EC3327484A09D5875EBC600861__v2b9abfbb&uin=&fromtag=120032&src=C400000b00nK1iJVRz.m4a" autoplay loop muted></audio>
-    <audio id="screamAudio" src="https://assets.mixkit.co/active_storage/sfx/257/257-preview.mp3"></audio>
-    <audio id="ambientAudio" src="https://assets.mixkit.co/active_storage/sfx/281/281-preview.mp3" loop></audio>
 
     <script>
-        let submitCount = 0;
+        function checkNames() {
+            const name1 = document.getElementById('name1').value;
+            const name2 = document.getElementById('name2').value;
 
-        // 外链资源
-        const resources = {
-            bgImage: 'https://i.imgur.com/YKdXf3k.jpg',
-            scream: 'https://assets.mixkit.co/active_storage/sfx/257/257-preview.mp3',
-            ambient: 'https://assets.mixkit.co/active_storage/sfx/281/281-preview.mp3',
-            sweetMusic: 'https://ws.stream.qqmusic.qq.com/C400000rA4JG1njrS4.m4a?guid=169745647&vkey=A4E54A6AAA1F706E30F02F485C25B2580049F8B992E539146FB1F01EE4EFBA960D497441E4C261DD96AAA3EC3327484A09D5875EBC600861__v2b9abfbb&uin=&fromtag=120032&src=C400000b00nK1iJVRz.m4a'
-        };
+            if (name1.includes('王政') || name2.includes('王政')) {
+                alert('我有自知之明');
+            } else {
+                document.getElementById('test - page').style.display = 'none';
+                document.getElementById('scary - page').style.display = 'block';
+                playScarySound();
+                startScaryEffects();
+            }
+        }
 
-        // 随机诅咒文字
+        function playScarySound() {
+            const scarySound = document.getElementById('scarySound');
+            scarySound.play();
+        }
+
+        function startScaryEffects() {
+            const scaryPage = document.getElementById('scary - page');
+            scaryPage.style.animation = 'vibrate 0.3s infinite';
+            const body = document.querySelector('body');
+            body.style.backgroundColor = 'rgba(255, 0, 0, 0.5)';
+            body.style.backgroundImage = 'url(https://pica.zhimg.com/80/v2-2051cd24fde511ddc186939a05ba49de_1440w.webp?source=1def8aca)';
+            body.style.backgroundSize = 'cover';
+            body.style.backgroundRepeat = 'no - repeat';
+            setInterval(addCurseText, 1000);
+        }
+
         const curseTexts = [
-            "检测到不忠行为...",
-            "契约已生效...",
-            "为什么背叛？",
-            "黑暗已降临...",
-            "无处可逃...",
-            "诅咒如影随形...",
-            "灵魂将被吞噬...",
-            "恐惧永不消散..."
+            '你将永远找不到真爱！',
+            '接下来一周都会诸事不顺！',
+            '你的手机马上会自动关机！',
+            '今晚睡觉会做噩梦！',
+            '出门小心被绊倒！',
+            '你的零食会突然消失！',
+            '明天会下雨，你没带伞！',
+            '你的头发开始大把大把掉！',
+            '你的鞋子会突然坏掉！',
+            '点外卖永远会送错！',
+            '玩游戏把把遇到坑队友！',
+            '坐公交永远错过！',
+            '你的耳机线又缠在一起了！',
+            '刚洗的衣服就被弄脏！',
+            '看视频总会遇到广告！',
+            '银行卡余额突然变少！',
+            '钥匙又找不到了！',
+            '喝饮料永远中不了奖！',
+            '跑步总会摔跟头！',
+            '刚买的东西就降价！'
         ];
 
-        // 获取元素
-        const submitBtn = document.getElementById('submitBtn');
-        const sweetPage = document.getElementById('sweetPage');
-        const terrorPage = document.getElementById('terrorPage');
-        const curseContainer = document.getElementById('curseContainer');
-        const sweetMusic = document.getElementById('sweetMusic');
-        const screamAudio = document.getElementById('screamAudio');
-        const ambientAudio = document.getElementById('ambientAudio');
-
-        // 初始化
-        submitBtn.addEventListener('click', handleSubmit);
-
-        // 尝试播放甜美音乐
-        function playSweetMusic() {
-            sweetMusic.muted = false;
-            sweetMusic.play().catch((error) => {
-                console.error('初始音频播放被阻止:', error);
-                sweetMusic.muted = true;
-                sweetMusic.play().then(() => {
-                    document.addEventListener('click', () => {
-                        sweetMusic.muted = false;
-                    }, { once: true });
-                }).catch((innerError) => {
-                    console.error('静音音频播放出错:', innerError);
-                });
-            });
+        function addCurseText() {
+            const scaryPage = document.getElementById('scary - page');
+            const randomIndex = Math.floor(Math.random() * curseTexts.length);
+            const curseText = document.createElement('div');
+            curseText.textContent = curseTexts[randomIndex];
+            curseText.style.position = 'absolute';
+            curseText.style.color = 'red';
+            curseText.style.fontSize = '24px';
+            curseText.style.left = Math.random() * window.innerWidth + 'px';
+            curseText.style.top = Math.random() * window.innerHeight + 'px';
+            curseText.style.animation = 'vibrate 0.3s infinite';
+            scaryPage.appendChild(curseText);
         }
 
-        // 页面加载完成后尝试播放音乐
-        window.addEventListener('load', playSweetMusic);
-
-        function handleSubmit(e) {
-            e.preventDefault();
-
-            // 简单的输入验证
-            const yourName = document.getElementById('yourName').value;
-            const partnerName = document.getElementById('partnerName').value;
-            if (!yourName || !partnerName) {
-                alert('请输入你的名字和TA的名字');
-                return;
-            }
-
-            // 验证是否输入“王政”
-            if (yourName === "王政" || partnerName === "王政") {
-                alert('不要不自量力');
-                return;
-            }
-
-            if (submitCount === 0) {
-                showPrivacyAlert();
-                submitCount++;
-            } else {
-                activateTerrorMode();
-            }
-
-            // 添加爱心动效
-            createHearts(3);
-        }
-
-        function createHearts(count) {
-            for (let i = 0; i < count; i++) {
+        function createHearts() {
+            const heartContainer = document.querySelector('.heart - container');
+            for (let i = 0; i < 50; i++) {
                 const heart = document.createElement('div');
-                heart.style.cssText = `
-                    position: absolute;
-                    left: ${50 + Math.random() * 20 - 10}%;
-                    top: 80%;
-                    font-size: 30px;
-                    animation: heartFloat ${2 + Math.random() * 2}s linear;
-                    opacity: 0;
-                `;
-                heart.innerHTML = '❤️';
-                document.body.appendChild(heart);
-
-                setTimeout(() => heart.remove(), 2000);
+                heart.classList.add('heart');
+                heart.style.left = Math.random() * window.innerWidth + 'px';
+                heart.style.animationDuration = (2 + Math.random() * 2) +'s';
+                heartContainer.appendChild(heart);
             }
         }
 
-        function showPrivacyAlert() {
-            if (confirm('请确认您已获得对方同意\n尊重隐私是爱情的第一步哦~')) return;
-        }
+        document.addEventListener('DOMContentLoaded', createHearts);
+    </script>
+</body>
 
-        function activateTerrorMode() {
-            try {
-                // 停止甜美音乐
-                sweetMusic.pause();
-
-                // 切换页面
-                sweetPage.style.display = 'none';
-                terrorPage.style.display = 'block';
-                document.body.classList.add('terror-mode');
-
-                // 全屏处理，处理不同浏览器兼容性
-                const elem = document.documentElement;
-                if (elem.requestFullscreen) {
-                    elem.requestFullscreen();
-                } else if (elem.webkitRequestFullscreen) { /* Safari */
-                    elem.webkitRequestFullscreen();
-                } else if (elem.msRequestFullscreen) { /* IE11 */
-                    elem.msRequestFullscreen();
-                }
-
-                // 启动恐怖效果
-                initAntiEscape();
-                generateCursedText();
-                playHorrorAudio();
-                startScreenShake();
-            } catch (error) {
-                console.error('激活恐怖模式出错:', error);
-            }
-        }
-
-        function initAntiEscape() {
-            // 禁用常见操作
-            document.addEventListener('contextmenu', e => e.preventDefault());
-            document.addEventListener('keydown', e => {
-                if (e.key === 'F12' || e.ctrlKey || e.metaKey) e.preventDefault();
-            });
-
-            // 控制台警告
-            console.log('%c⚠️ 你已触发黑暗诅咒！⚠️',
-                'font: bold 30px sans-serif; color: red; text-shadow: 0 0 5px black;');
-        }
-
-        function playHorrorAudio() {
-            screamAudio.play().catch((error) => {
-                console.error('尖叫音效播放出错:', error);
-            });
-            setTimeout(() => {
-                ambientAudio.play().catch((error) => {
-                    console.error('环境音效播放出错:', error);
-                });
-            }, 2000);
-        }
-
-        function generateCursedText() {
-            const numTexts = 8; // 生成的诅咒文字数量
-            for (let i = 0; i < numTexts; i++) {
-                const randomText = curseTexts[Math.floor(Math.random() * curseTexts.length)];
-                const div = document.createElement('div');
-                div.className = 'curse-text';
-                div.style.left = `${Math.random() * 80}%`;
-                div.style.top = `${Math.random() * 80}%`;
-                div.textContent = randomText;
-                curseContainer.appendChild(div);
-                setTimeout(() => {
-                    div.style.opacity = 1;
-                }, i * 300);
-            }
-        }
-
-        function startScreenShake() {
-            const shakeInterval = setInterval(() => {
-                const shakeAmount = 10; // 震动幅度
-                const x = (Math.random() - 0.5) * shakeAmount;
-                const y = (Math.random() - 0.5) * shakeAmount;
-                document.body.style.transform = `translate(${x}px, ${y}px)`;
-                setTimeout(() => document.body.style.transform = '', 50);
-            }, 100);
-
-            // 避免内存泄漏，在页面隐藏时清除定时器
-            document.addEventListener('visibilitychange', () => {
-                if (document.visibilityState === 'hidden') {
-                    clearInterval(shakeInterval);
-                }
-            });
-        }
-
-        // 移动端触摸处理
-        let lastTouch = 0;
-        document.addEventListener('touchstart', e => {
-            if (e.touches.length > 2) { // 多指触摸触发
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.webkitExitFullscreen) { /* Safari */
-                    document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) { /* IE11 */
-                    document.msExitFullscreen();
-                }
-            }
-        }, { passive: true });
-
-        // 防开发者工具
-        const devToolsInterval = setInterval(() => {
-            if (window.outerWidth - window.innerWidth > 200) {
-                document.body.innerHTML = '<h1 style="color:red">禁止窥探！</h1>';
-                clearInterval(devToolsInterval); // 停止定时器
-            }
-        }, 1000);
-
-        // 处理音频加载错误
-        sweetMusic.addEventListener('error', () => {
-            console.error('甜美音乐加载失败');
-        });
-        screamAudio.addEventListener
+</html>
