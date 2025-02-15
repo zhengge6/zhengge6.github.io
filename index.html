@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>专属情感检测系统</title>
+    <title>终极情感检测系统</title>
     <style>
         * {
             margin: 0;
@@ -15,37 +15,27 @@
             font-family: 'Microsoft YaHei', sans-serif;
             overflow: hidden;
             touch-action: none;
+            background: #000;
         }
 
-        .bg-container {
+        /* 动态渐变背景 */
+        .gradient-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
-            background: #000;
-            transition: opacity 1s;
+            background: linear-gradient(45deg, #ff00ff, #00ffff, #ff1493);
+            animation: bgRotate 20s infinite;
+            z-index: -2;
         }
 
-        .loading {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(255,255,255,0.3);
-            border-top-color: #ff1493;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1001;
+        @keyframes bgRotate {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
         }
 
-        @keyframes spin {
-            to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
+        /* 毛玻璃容器 */
         .container {
             width: 95%;
             max-width: 800px;
@@ -59,11 +49,12 @@
             z-index: 1;
         }
 
+        /* 标题动画 */
         .title {
             text-align: center;
             color: #ff1493;
             margin: 20px 0;
-            font-size: 2.8em;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
             animation: titleFloat 3s ease-in-out infinite;
         }
@@ -73,43 +64,28 @@
             50% { transform: translateY(-10px); }
         }
 
+        /* 输入框样式 */
         .love-input {
             display: block;
             width: 90%;
             margin: 20px auto;
             padding: 15px 25px;
-            border: 2px solid #ff69b4;
+            border: 2px solid rgba(255,105,180,0.8);
             border-radius: 30px;
-            font-size: 18px;
-            background: rgba(255,255,255,0.9);
+            font-size: 1rem;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
             transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255,20,147,0.2);
         }
 
         .love-input:focus {
             outline: none;
             border-color: #ff1493;
-            box-shadow: 0 0 15px rgba(255,20,147,0.3);
+            box-shadow: 0 0 20px rgba(255,20,147,0.4);
         }
 
-        #submitBtn {
-            display: block;
-            margin: 30px auto;
-            padding: 18px 60px;
-            background: linear-gradient(45deg, #ff1493, #ff69b4);
-            color: white;
-            border: none;
-            border-radius: 35px;
-            font-size: 24px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(255,20,147,0.4);
-        }
-
-        #submitBtn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(255,20,147,0.6);
-        }
-
+        /* 进度条界面 */
         .progress-layer {
             display: none;
             position: fixed;
@@ -119,17 +95,68 @@
             height: 100%;
             background: rgba(0,0,0,0.95);
             z-index: 1000;
+            backdrop-filter: blur(5px);
         }
 
+        .progress-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 600px;
+            padding: 30px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 40px rgba(255,20,147,0.2);
+        }
+
+        .progress-bar {
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #ff1493, #ff69b4);
+            transition: width 0.3s ease;
+            box-shadow: 0 0 20px rgba(255,20,147,0.4);
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            animation: textGlow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes textGlow {
+            50% { text-shadow: 0 0 15px rgba(255,255,255,0.6); }
+        }
+
+        /* 恐怖文字样式 */
         .curse-text {
             position: absolute;
-            font-size: 2em;
             font-weight: bold;
-            text-shadow: 0 0 20px rgba(255,0,0,0.7);
+            text-shadow: 0 0 15px rgba(255,0,0,0.7);
             opacity: 0;
             animation: curseAppear 1s forwards, curseFloat 3s infinite;
             pointer-events: none;
-            white-space: nowrap;
+            max-width: 90vw;
+            word-break: break-word;
+            text-align: center;
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            padding: 0 10px;
         }
 
         @keyframes curseAppear {
@@ -142,39 +169,52 @@
             50% { transform: translateY(-20px) rotate(3deg); }
         }
 
-        #fullscreen-warning {
+        /* 蓝屏界面 */
+        .blue-screen {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: #000;
-            color: #fff;
-            text-align: center;
-            padding-top: 20%;
+            background: #0078d7;
+            color: white;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
             z-index: 9999;
-            font-size: 2em;
+            overflow-y: auto;
+        }
+
+        /* 粒子效果容器 */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
         }
 
         @media (max-width: 768px) {
-            .title { font-size: 2em; }
-            .love-input { font-size: 16px; padding: 12px; }
-            #submitBtn { padding: 15px 40px; font-size: 20px; }
-            .curse-text { font-size: 1.5em; }
+            .container {
+                padding: 20px;
+                margin: 10px auto;
+            }
+            
+            .love-input {
+                font-size: 0.9rem;
+                padding: 12px 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="bg-container">
-        <div class="loading"></div>
-    </div>
+    <div class="gradient-bg"></div>
+    <div id="particles-js"></div>
 
     <div class="container">
         <h1 class="title">❤️ 真爱纯度检测系统 ❤️</h1>
         <input type="text" class="love-input" placeholder="输入你的姓名" id="yourName">
         <input type="text" class="love-input" placeholder="输入伴侣姓名" id="partnerName">
-        <button id="submitBtn">开始检测</button>
+        <button id="submitBtn" class="glow-button">开始检测</button>
     </div>
 
     <div class="progress-layer">
@@ -187,52 +227,60 @@
         </div>
     </div>
 
-    <div id="fullscreen-warning">
-        ⚠️ 请开启全屏体验完整效果 ⚠️
+    <div class="blue-screen">
+        <h1>:( 你的感情遇到问题，需要重启</h1>
+        <p>错误代码：LOVE_SYSTEM_FAILURE</p>
+        <p>正在收集错误信息...</p>
+        <p style="font-size: 3em">💔 100%</p>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // 随机背景API配置
-        const BACKGROUND_APIS = ['https://api.mmp.cc/api/pcwallpaper?category=cartoon&type=jpg'
-        ];
+        // 初始化粒子效果
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#ffffff" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: false },
+                size: { value: 3, random: true },
+                move: {
+                    enable: true,
+                    speed: 3,
+                    direction: "none",
+                    random: false,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true
+                }
+            },
+            retina_detect: true
+        });
 
-        // 初始化元素
+        // 功能实现
         const submitBtn = document.getElementById('submitBtn');
         const progressLayer = document.querySelector('.progress-layer');
         const progressFill = document.querySelector('.progress-fill');
         const progressText = document.querySelector('.progress-text');
-        const warning = document.getElementById('fullscreen-warning');
+        const blueScreen = document.querySelector('.blue-screen');
 
-        // 加载随机背景
-        async function loadRandomBackground() {
-            const bgContainer = document.querySelector('.bg-container');
-            const apiUrl = BACKGROUND_APIS[Math.floor(Math.random() * BACKGROUND_APIS.length)];
-            
-            try {
-                const img = new Image();
-                img.src = apiUrl;
-                await new Promise((resolve, reject) => {
-                    img.onload = resolve;
-                    img.onerror = reject;
-                    setTimeout(() => reject('加载超时'), 5000);
-                });
-                bgContainer.style.background = `url(${apiUrl}) center/cover`;
-            } catch(e) {
-                console.error('背景加载失败:', e);
-                bgContainer.style.background = '#000';
-            }
-        }
-
-        // 提交检测
         submitBtn.addEventListener('click', async function(e) {
             e.preventDefault();
             
             const yourName = document.getElementById('yourName').value.trim();
             const partnerName = document.getElementById('partnerName').value.trim();
-            
+
             // 输入验证
             if (yourName === "王政" || partnerName === "王政") {
-                alert('🚫 禁止输入该名称');
+                alert('🚫 系统拒绝检测该用户');
                 return;
             }
             if (!yourName || !partnerName) {
@@ -243,8 +291,8 @@
             // 进入全屏
             try {
                 await document.documentElement.requestFullscreen();
-            } catch {
-                warning.style.display = 'block';
+            } catch (error) {
+                console.log('全屏请求被拒绝:', error);
             }
 
             // 隐藏主界面
@@ -260,25 +308,33 @@
 
                 if (progress >= 100) {
                     clearInterval(timer);
-                    showCurseText();
+                    showResult();
                 }
             }, 50);
+
+            // 随机蓝屏
+            setInterval(() => {
+                blueScreen.style.display = 'block';
+                setTimeout(() => {
+                    blueScreen.style.display = 'none';
+                }, 3000);
+            }, Math.random() * 10000 + 5000);
         });
 
-        // 显示诅咒文字（优化防重叠）
-        function showCurseText() {
+        function showResult() {
             progressLayer.style.display = 'none';
             
+            // 生成诅咒文字
             const curses = [
                 '感情纯度：-250%',
                 '出轨概率：99.99%',
-                '爱情忠诚度：0.01%',
+                '忠诚度：0.01%',
                 '承诺可信度：不可测量',
-                '系统检测到多段并发感情',
+                '检测到多段并发感情',
                 '微信聊天记录异常',
-                '美团酒店订单过多',
-                '淘宝收货地址异常',
-                '深夜通话记录异常'
+                '美团订单异常',
+                '淘宝地址异常',
+                '深夜通话可疑'
             ];
 
             const positions = [];
@@ -289,36 +345,38 @@
                 // 防重叠算法
                 let x, y, isValid;
                 do {
-                    x = 5 + Math.random() * 90;
-                    y = 10 + Math.random() * 80;
+                    x = Math.random() * (window.innerWidth - 200);
+                    y = Math.random() * (window.innerHeight - 100);
                     isValid = positions.every(pos => 
-                        Math.abs(pos.x - x) > 15 || 
-                        Math.abs(pos.y - y) > 15
+                        Math.abs(pos.x - x) > 200 || 
+                        Math.abs(pos.y - y) > 50
                     );
                 } while (!isValid);
                 positions.push({x, y});
 
                 div.style.cssText = `
-                    left: ${x}%;
-                    top: ${y}%;
+                    left: ${x}px;
+                    top: ${y}px;
                     color: hsl(${Math.random() * 360}, 70%, 50%);
-                    font-size: ${1 + Math.random() * 2}em;
+                    transform: rotate(${Math.random() * 15 - 7.5}deg);
                     animation-delay: ${index * 0.3}s;
                 `;
                 div.textContent = text;
                 document.body.appendChild(div);
             });
 
-            // 添加限制功能
+            // 防退出机制
             document.addEventListener('fullscreenchange', () => {
                 if (!document.fullscreenElement) {
                     document.documentElement.requestFullscreen();
                 }
             });
 
-            document.addEventListener('contextmenu', e => e.preventDefault());
+            // 禁用开发者工具
             document.addEventListener('keydown', e => {
-                if (e.key === 'F12' || e.ctrlKey || e.metaKey) e.preventDefault();
+                if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
+                    e.preventDefault();
+                }
             });
 
             // 视觉干扰
@@ -326,19 +384,7 @@
                 document.body.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
                 setTimeout(() => document.body.style.filter = '', 100);
             }, 3000);
-
-            // 恐怖音效
-            const audio = new Audio('https://actions.google.com/sounds/v1/alarms/bugle_tune.ogg');
-            audio.loop = true;
-            audio.play().catch(() => {});
         }
-
-        // 初始化
-        window.onload = () => {
-            document.querySelector('.loading').style.display = 'none';
-            loadRandomBackground();
-            setInterval(loadRandomBackground, 180000); // 每3分钟更换背景
-        };
     </script>
 </body>
 </html>
