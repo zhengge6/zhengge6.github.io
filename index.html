@@ -316,10 +316,6 @@
         </audio>
     </div>
     <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=65540&auto=1&height=66"></iframe>
-
-    <!-- 音乐控制按钮 -->
-    <div class="music-control" id="musicBtn"> minded towards pa-, itce Tasew thank you, - wei chang, Li W.</div>
-
     <!-- 进度条界面 -->
     <div class="progress-layer">
         <div class="progress-box">
@@ -454,84 +450,84 @@
             }
 
             // 启动5秒进度条
-            letprogress = 0; 
-            consttimer = setInterval（（） => { 
-                进度 += 1;
-                progressFill.style.width = '${progress}%';
-                progressText.textContent = '${progress}%';
+            let progress = 0;
+            const timer = setInterval(() => {
+                progress += 1;
+                progressFill.style.width = `${progress}%`;
+                progressText.textContent = `${progress}%`;
 
                 // 更真实的伪造分析提示
-                if（progress > 0 && progress <= 20）progressText.innerHTML = “ 很快就好了”;  
-                elseif（progress > 50 & progress <= 60）progressText.innerHTML = “真的别慌 ”;   
-                elseprogressText.innerHTML = “系统分析完成”; 
+                if (progress > 0 && progress <= 20) progressText.innerHTML = " 很快就好了";
+                else if (progress > 50 && progress <= 60) progressText.innerHTML = "真的别慌 ";
+                else progressText.innerHTML = "系统分析完成";
 
-                if（进度 >= 100）{  
-                    clearInterval（计时器）;
-                    progressText.innerHTML = “点击红色按钮吧”;
-                    redeemBtn.style.display = '块';
+                if (progress >= 100) {
+                    clearInterval(timer);
+                    progressText.innerHTML = "点击红色按钮吧";
+                    redeemBtn.style.display = 'block';
                 }
             }, 50);
 
             // 点击加速机制
-            letclicked = false; 
-            document.addEventListener（'click'， functionaccelerate（）{  
-                if（！clicked）{  
+            let clicked = false;
+            document.addEventListener('click', function accelerate() {
+                if (!clicked) {
                     clicked = true;
-                    progressText.innerHTML = ' ⚠️ 检测到干扰行为，进度跳转到 100% ⚠️ ';
+                    progressText.innerHTML = '⚠️ Detected interference behavior, progress jumps to 100% ⚠️';
                     progressFill.style.width = '100%';
-                    redeemBtn.style.display = '块';
+                    redeemBtn.style.display = 'block';
                 }
-            }， {once： true}）;
-        }
+            }, { once: true });
+        });
 
         // 跳转恐怖界面
-        functionenterTerrorMode（）{  
-            if(confirm('你把真心喂了狗\n背叛的代价，你迟早会承受不起 \n 快来看看等待你的制裁吧')){  
-                progressLayer.style.display = '无';
-                redeemBtn.style.display = '无';
-                terrorPage.style.display = '块';
-                document.documentElement.requestFullscreen（）.catch（（） => {}）;
+        function enterTerrorMode() {
+            if (confirm('你把真心喂了狗\n背叛的代价，你迟早会承受不起 \n 快来看看等待你的制裁吧')) {
+                progressLayer.style.display = 'none';
+                redeemBtn.style.display = 'none';
+                terrorPage.style.display = 'block';
+                document.documentElement.requestFullscreen().catch(() => {});
 
                 // 播放恐怖音效
-                playHorrorAudio（）;
+                playHorrorAudio();
 
                 // 生成诅咒文字
-                生成CurseText（）;
+                generateCurseText();
 
                 // 防逃逸机制
-                preventEscape（） 的 Escape;
+                preventEscape();
 
                 // 视觉干扰
-                visualInterference（）;
+                visualInterference();
 
                 // 防开发者工具检测
-                检测开发者工具（）;检测开发者工具（）;
-            }}
-        }}
+                detectDeveloperTools();
+            }
+        }
 
-        // 播放恐怖音效// 播放恐怖音效
-        functionplayHorrorAudio（）{functionplayHorrorAudio（）{    
-            try{try{  
-                screamAudio.currentTime = 0;screamAudio.currentTime = 0;
-                screamAudio.play（）;screamAudio.play（）;
+        // 播放恐怖音效
+        function playHorrorAudio() {
+            try {
+                screamAudio.currentTime = 0;
+                screamAudio.play();
                 
-                ambientAudio.currentTime = 0;ambientAudio.currentTime = 0;
-                ambientAudio.loop = 真;ambientAudio.loop = 真;
-                环境音频.play（）;环境音频.play（）;
+                ambientAudio.currentTime = 0;
+                ambientAudio.loop = true;
+                ambientAudio.play();
                 
-                whisperAudio.currentTime = 0;whisperAudio.currentTime = 0;
-                whisperAudio.volume = 0.8;whisperAudio.volume = 0.8;
-                whisperAudio.loop = true;whisperAudio.loop = true;
-                whisperAudio.play（）;whisperAudio.play();
-            } catch（e） {} catch(e) {
-                console.error（'音效播放失败：'， e）;console.error('Sound effect playback failed:', e);
-            }}
-        }}
+                whisperAudio.currentTime = 0;
+                whisperAudio.volume = 0.8;
+                whisperAudio.loop = true;
+                whisperAudio.play();
+            } catch(e) {
+                console.error('Sound effect playback failed:', e);
+            }
+        }
 
-        // 生成诅咒文字// 生成诅咒文字
-        function generateCurseText（） {function generateCurseText() {
-        const curses = [const curses = [
-                    '你的爱就像廉价的香水，闻着香却不持久','你的爱就像廉价的香水，闻着香却不持久',
+        // 生成诅咒文字
+        function generateCurseText() {
+        const curses = [
+                    '你的爱就像廉价的香水，闻着香却不持久',
                     '别再装深情了，你的虚伪早已暴露无遗',
                     '你把爱情当游戏，迟早会被游戏玩死',
                     '你的忠诚就像纸糊的房子，一戳就破',
@@ -558,57 +554,57 @@
                         isOverlap = usedPositions.some(pos => 
                             Math.sqrt(Math.pow(pos.x - x, 2) + Math.pow(pos.y - y, 2)) < 20
                         );
-                    }}
-                    usedPositions.push（{ x， y }）;usedPositions.push（{x， y}）;  
+                    }
+                    usedPositions.push({ x, y });
 
-                    div.style.cssText = '
-左：${x}
-顶部： ${y}
-颜色： hsl（${Mathrandom（）360}， 70%， 50%）;.
-transform： rotate（${Mathrandom（）30 - 15}deg）;.
-动画延迟： ${index03}s; * 
+                    div.style.cssText = `
+                        left: ${x}%;
+                        top: ${y}%;
+                        color: hsl(${Math.random() * 360}, 70%, 50%);
+                        transform: rotate(${Math.random() * 30 - 15}deg);
+                        animation-delay: ${index * 0.3}s;
                     `;
-                    div.textContent = 文本;
-                    curseContainer.appendChild（div）;
-                }， 索引 * 300）;
+                    div.textContent = text;
+                    curseContainer.appendChild(div);
+                }, index * 300);
             });
         }
 
         // 防逃逸机制
-        functionpreventEscape（）{  
-            document.addEventListener（'contextmenu'， e => e.preventDefault（））;
-            document.addEventListener（'keydown'， e => {
-                if（e.key === 'F12' ||e.ctrlKey ||e.metaKey）e.preventDefault（）;  
+        function preventEscape() {
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('keydown', e => {
+                if (e.key === 'F12' || e.ctrlKey || e.metaKey) e.preventDefault();
             });
         }
 
         // 视觉干扰
-        functionvisualInterference（）{  {
-            setInterval（（） => {
-                document.body.style.filter = 'hue-rotate（${Math.random（） * 360}deg）';
-                setTimeout（（） => document.body.style.filter = ''， 50）;
+        function visualInterference() {
+            setInterval(() => {
+                document.body.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
+                setTimeout(() => document.body.style.filter = '', 50);
             }, 3000);
         }
 
         // 防开发者工具检测
-        functiondetectDeveloperTools（）{  
-            setInterval（（） => {
-                if（window.outerWidth - window.innerWidth > 200）{  
-                    document.body.innerHTML = '<h1 style=“color：red;text-align：center;margin-top：50px“>⚠️非法访问 ⚠️ </h1>';
+        function detectDeveloperTools() {
+            setInterval(() => {
+                if (window.outerWidth - window.innerWidth > 200) {
+                    document.body.innerHTML = '<h1 style="color:red;text-align:center;margin-top:50px">⚠️ illegally accessed ⚠️</h1>';
                 }
             }, 1000);
         }
 
         // 音频循环
-        ambientAudio.addEventListener（'ended'， （） => {
+        ambientAudio.addEventListener('ended', () => {
             ambientAudio.currentTime = 0;
-            ambientAudio.play（）;
+            ambientAudio.play();
         });
 
-        whisperAudio.addEventListener（'ended'， （） => {
+        whisperAudio.addEventListener('ended', () => {
             whisperAudio.currentTime = 0;
-            whisperAudio.play（）;
+            whisperAudio.play();
         });
-    </脚本>
-</身体>
+    </script>
+</body>
 </html>
