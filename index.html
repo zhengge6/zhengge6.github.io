@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>真爱检测系统</title>
+    <title>专属情感检测系统</title>
     <style>
-        /* 全局样式 */
         * {
             margin: 0;
             padding: 0;
@@ -15,9 +14,9 @@
         body {
             font-family: 'Microsoft YaHei', sans-serif;
             overflow: hidden;
+            touch-action: none;
         }
 
-        /* 背景容器 */
         .bg-container {
             position: fixed;
             top: 0;
@@ -25,16 +24,10 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: linear-gradient(45deg, #ff00ff, #00ffff, #ff1493);
-            animation: bgRotate 20s infinite;
+            background: #000;
+            transition: opacity 1s;
         }
 
-        @keyframes bgRotate {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(360deg); }
-        }
-
-        /* 加载动画 */
         .loading {
             width: 40px;
             height: 40px;
@@ -53,7 +46,6 @@
             to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
-        /* 主容器 */
         .container {
             width: 95%;
             max-width: 800px;
@@ -67,7 +59,6 @@
             z-index: 1;
         }
 
-        /* 标题样式 */
         .title {
             text-align: center;
             color: #ff1493;
@@ -82,7 +73,6 @@
             50% { transform: translateY(-10px); }
         }
 
-        /* 输入框样式 */
         .love-input {
             display: block;
             width: 90%;
@@ -101,7 +91,6 @@
             box-shadow: 0 0 15px rgba(255,20,147,0.3);
         }
 
-        /* 按钮样式 */
         #submitBtn {
             display: block;
             margin: 30px auto;
@@ -121,7 +110,6 @@
             box-shadow: 0 8px 25px rgba(255,20,147,0.6);
         }
 
-        /* 进度条界面 */
         .progress-layer {
             display: none;
             position: fixed;
@@ -133,46 +121,6 @@
             z-index: 1000;
         }
 
-        .progress-box {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 600px;
-            padding: 30px;
-            background: rgba(255,255,255,0.95);
-            border-radius: 20px;
-            box-shadow: 0 0 40px rgba(0,0,0,0.3);
-        }
-
-        .progress-bar {
-            height: 40px;
-            background: #eee;
-            border-radius: 20px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .progress-fill {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, #ff1493, #ff69b4);
-            transition: width 0.3s ease;
-        }
-
-        .progress-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #fff;
-            font-weight: bold;
-            font-size: 20px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-
-        /* 诅咒文字样式 */
         .curse-text {
             position: absolute;
             font-size: 2em;
@@ -194,7 +142,6 @@
             50% { transform: translateY(-20px) rotate(3deg); }
         }
 
-        /* 全屏警告样式 */
         #fullscreen-warning {
             display: none;
             position: fixed;
@@ -208,6 +155,13 @@
             padding-top: 20%;
             z-index: 9999;
             font-size: 2em;
+        }
+
+        @media (max-width: 768px) {
+            .title { font-size: 2em; }
+            .love-input { font-size: 16px; padding: 12px; }
+            #submitBtn { padding: 15px 40px; font-size: 20px; }
+            .curse-text { font-size: 1.5em; }
         }
     </style>
 </head>
@@ -238,6 +192,13 @@
     </div>
 
     <script>
+        // 随机背景API配置
+        const BACKGROUND_APIS = [
+            'https://source.unsplash.com/random/1920x1080',
+            'https://picsum.photos/1920/1080',
+            'https://api.mmp.cc/api/pcwallpaper?category=cartoon&type=jpg'
+        ];
+
         // 初始化元素
         const submitBtn = document.getElementById('submitBtn');
         const progressLayer = document.querySelector('.progress-layer');
@@ -245,22 +206,49 @@
         const progressText = document.querySelector('.progress-text');
         const warning = document.getElementById('fullscreen-warning');
 
+        // 加载随机背景
+        async function loadRandomBackground() {
+            const bgContainer = document.querySelector('.bg-container');
+            const apiUrl = BACKGROUND_APIS[Math.floor(Math.random() * BACKGROUND_APIS.length)];
+            
+            try {
+                const img = new Image();
+                img.src = apiUrl;
+                await new Promise((resolve, reject) => {
+                    img.onload = resolve;
+                    img.onerror = reject;
+                    setTimeout(() => reject('加载超时'), 5000);
+                });
+                bgContainer.style.background = `url(${apiUrl}) center/cover`;
+            } catch(e) {
+                console.error('背景加载失败:', e);
+                bgContainer.style.background = '#000';
+            }
+        }
+
         // 提交检测
-        submitBtn.addEventListener('click', function(e) {
+        submitBtn.addEventListener('click', async function(e) {
             e.preventDefault();
             
             const yourName = document.getElementById('yourName').value.trim();
             const partnerName = document.getElementById('partnerName').value.trim();
             
+            // 输入验证
+            if (yourName === "王政" || partnerName === "王政") {
+                alert('🚫 禁止输入该名称');
+                return;
+            }
             if (!yourName || !partnerName) {
                 alert('请输入双方姓名');
                 return;
             }
 
             // 进入全屏
-            document.documentElement.requestFullscreen().catch(() => {
+            try {
+                await document.documentElement.requestFullscreen();
+            } catch {
                 warning.style.display = 'block';
-            });
+            }
 
             // 隐藏主界面
             document.querySelector('.container').style.display = 'none';
@@ -280,11 +268,10 @@
             }, 50);
         });
 
-        // 显示诅咒文字
+        // 显示诅咒文字（优化防重叠）
         function showCurseText() {
             progressLayer.style.display = 'none';
             
-            // 生成诅咒文字
             const curses = [
                 '感情纯度：-250%',
                 '出轨概率：99.99%',
@@ -297,12 +284,26 @@
                 '深夜通话记录异常'
             ];
 
+            const positions = [];
             curses.forEach((text, index) => {
                 const div = document.createElement('div');
                 div.className = 'curse-text';
+                
+                // 防重叠算法
+                let x, y, isValid;
+                do {
+                    x = 5 + Math.random() * 90;
+                    y = 10 + Math.random() * 80;
+                    isValid = positions.every(pos => 
+                        Math.abs(pos.x - x) > 15 || 
+                        Math.abs(pos.y - y) > 15
+                    );
+                } while (!isValid);
+                positions.push({x, y});
+
                 div.style.cssText = `
-                    left: ${5 + Math.random() * 90}%;
-                    top: ${10 + Math.random() * 80}%;
+                    left: ${x}%;
+                    top: ${y}%;
                     color: hsl(${Math.random() * 360}, 70%, 50%);
                     font-size: ${1 + Math.random() * 2}em;
                     animation-delay: ${index * 0.3}s;
@@ -311,14 +312,13 @@
                 document.body.appendChild(div);
             });
 
-            // 添加无法退出的限制
+            // 添加限制功能
             document.addEventListener('fullscreenchange', () => {
                 if (!document.fullscreenElement) {
                     document.documentElement.requestFullscreen();
                 }
             });
 
-            // 禁用右键和键盘
             document.addEventListener('contextmenu', e => e.preventDefault());
             document.addEventListener('keydown', e => {
                 if (e.key === 'F12' || e.ctrlKey || e.metaKey) e.preventDefault();
@@ -329,11 +329,18 @@
                 document.body.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
                 setTimeout(() => document.body.style.filter = '', 100);
             }, 3000);
+
+            // 恐怖音效
+            const audio = new Audio('https://actions.google.com/sounds/v1/alarms/bugle_tune.ogg');
+            audio.loop = true;
+            audio.play().catch(() => {});
         }
 
-        // 初始化加载动画
+        // 初始化
         window.onload = () => {
             document.querySelector('.loading').style.display = 'none';
+            loadRandomBackground();
+            setInterval(loadRandomBackground, 180000); // 每3分钟更换背景
         };
     </script>
 </body>
